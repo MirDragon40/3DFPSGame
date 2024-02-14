@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class PlayerMove : MonoBehaviour
 {
+
+    
     // 목표: 키보드 방향키(wasd)를 누르면 캐릭터를 바라보는 방향 기준으로 이동시키고 싶다. 
     // 속성:
     // - 이동속도
@@ -62,5 +64,33 @@ public class PlayerMove : MonoBehaviour
 
         // 3. 이동하기
         transform.position += speed * dir * Time.deltaTime;
+
+
+        
+        // 9번 키를 누르면 FPS 시점으로 전환
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            // FPS 카메라 모드로 전환
+            //CameraManager.instance.fpsCamera.enabled = true;
+            //CameraManager.instance.tpsCamera.enabled = false;
+
+            //CameraManager.instance.SetFPSCameraMode();
+
+            CameraManager.instance.SetCameraMode(CameraMode.FPS);
+        }
+        // 0번 키를 누르면 TPS 시점으로 전환
+        else if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            // TPS 카메라 모드로 전환 ver1
+            //CameraManager.instance.fpsCamera.enabled = false;
+            //CameraManager.instance.tpsCamera.enabled = true;
+
+            // TPS 카메라 모드로 전환 ver2
+            //CameraManager.instance.SetTPSCameramode();
+
+            // TPS 카메라 모드로 전환 ver3
+            CameraManager.instance.SetCameraMode(CameraMode.TPS);
+        }
+        
     }
 }

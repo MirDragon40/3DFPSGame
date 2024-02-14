@@ -12,7 +12,7 @@ public class FPSCamera : MonoBehaviour
     // - 회전 속도
     public float RotationSpeed = 200;  // 초당 200초까지 회전 가능한 속도
     // 누적할 x각도와 y 각도
-    public float _mx = 0 ;
+    public float _mx = 0;
     public float _my = 0;
 
     /** 카메라 이동 **/
@@ -37,8 +37,8 @@ public class FPSCamera : MonoBehaviour
 
     }
 
-    void Update()
-        
+    private void LateUpdate()
+
     {
         // 1. 캐릭터의 눈 위치로 카메라를 이동시킨다. 
         transform.position = Target.transform.position;
@@ -51,8 +51,8 @@ public class FPSCamera : MonoBehaviour
         //Debug.Log(message: $"mousePosition: {mousePosition.x}, {mousePosition.y}");
 
         // 2. 마우스 입력 값을 이용해 회전 방향을 구한다. 
-        Vector3 rotationDir = new Vector3(mouseX,mouseY, z: 0);
-       // rotationDir.Normalize();   // 정규화
+        Vector3 rotationDir = new Vector3(mouseX, mouseY, z: 0);
+        // rotationDir.Normalize();   // 정규화
 
 
 
@@ -62,8 +62,8 @@ public class FPSCamera : MonoBehaviour
         //transform.eulerAngles += rotationDir * RotationSpeed * Time.deltaTime;
 
         // 3-1. 회전 방향에 따라 마우스 입력 값 만큼 미리 누적시킨다. 
-        _mx += + rotationDir.x *RotationSpeed* Time.deltaTime;
-        _my += + rotationDir.y *RotationSpeed* Time.deltaTime;
+        _mx += +rotationDir.x * RotationSpeed * Time.deltaTime;
+        _my += +rotationDir.y * RotationSpeed * Time.deltaTime;
 
         // 4. 시선의 상하 제한을 -90 ~ 90도 사이로 제한하고 싶다. 
         //Vector3 rotation = transform.eulerAngles;
@@ -74,7 +74,11 @@ public class FPSCamera : MonoBehaviour
 
         _my = Mathf.Clamp(value: _my, min: -90f, max: 90f);
 
-        transform.eulerAngles = new Vector3(x: -_my, y: _mx, z: 0);
+
+        if (CameraManager.instance.Mode == CameraMode.FPS)
+        {
+            transform.eulerAngles = new Vector3(x: -_my, y: _mx, z: 0);
+        }
 
         /*
         if (rotation.x < -90)

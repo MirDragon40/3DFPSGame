@@ -37,15 +37,22 @@ public class TPSCamera : MonoBehaviour
 
     }
 
-    void Update()
+    private void LateUpdate()
     {
         // 구현 순서:
         // 1. 카메라를 타겟(플레이어에서 조금 더 떨어진 거리)으로 이동시킨다. (따라다니게 한다.)
-        transform.position = Target.position + Offset;
+        if (CameraManager.instance.Mode == CameraMode.TPS)
+        {
+            transform.position = Target.position + Offset;
+        }
 
         // 2. 플레이어를 쳐다보게 한다. 
         // Rotates the transform so the forward vector points at target's current position.
-        transform.LookAt(Target);
+        if (CameraManager.instance.Mode == CameraMode.TPS)
+        {
+            transform.LookAt(Target);
+
+        }
 
         // 3. 마우스 입력을 받는다. 
         float mouseX = Input.GetAxis("Mouse X");
