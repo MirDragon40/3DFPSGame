@@ -19,10 +19,14 @@ public class PlayerMove : MonoBehaviour
     public float StaminaConsumeSpeed = 33f; // 초당 스태미나 소모량
     public float StaminaChargeSpeed = 50;  // 초당 스태미나 충전량
 
-    public int JumpTimes = 1;  // 점프 횟수
-
     [Header("스태미나 슬라이더 UI")]
     public Slider StaminaSliderUI;
+
+    [Header("플레이어 점프")]
+    public int JumpMaxCount = 2;
+    public int JumpRemainCount;
+    private bool _isJumping = false;
+
 
     private CharacterController _characterController;
 
@@ -40,7 +44,7 @@ public class PlayerMove : MonoBehaviour
     // 목표: 캐릭터에게 중력을 적용하고 싶다. 
     // 필요속성: 
     // - 중력 값
-    private float _gravity = -20;  // 중력 변수
+    private float _gravity = -20f;  // 중력 변수
     // - 누적할 중력 변수: y축 속도
     private float _yVelocity = 0f;
     // 구현 순서:
@@ -103,19 +107,23 @@ public class PlayerMove : MonoBehaviour
         }
         */
         // 점프 구현 과제: 2단 점프 구현
-        // 
-        if (Input.GetKeyDown(KeyCode.Space) && _characterController.isGrounded)
+        // 땅이면 점프 횟수 초기화
+        if (_characterController.isGrounded)
         {
-            _yVelocity = JumpPower;
-            JumpTimes = 1;
+            _isJumping = false;
+            _yVelocity = 0f;
+            JumpRemainCount = JumpMaxCount;
         }
-        else if (Input.GetKeyDown(KeyCode.Space) && _characterController.isGrounded == false)
+
+        // 1. 만약에 [Spacebar] 버튼을 누르는 순간 && (땅이거나 or 점프 횟수가 남아있다면)
+        if (Input.GetKeyDown(KeyCode.Space) && (_characterController.isGrounded || (_isJumping && JumpRemainCount > 0)))
         {
-            if (JumpTimes == 1)
-            {
-                _yVelocity = JumpPower;
-                JumpTimes = 0;
-            }
+            _isJumping = true;
+
+            JumpRemainCount--;
+
+            // 2. 플레이어에게 y축에 있어 점프 파워를 적용한다.
+            _yVelocity = JumpPower;
         }
 
 
@@ -126,9 +134,12 @@ public class PlayerMove : MonoBehaviour
 
         // 3-1. 중력 적용
         // 1. 중력 가속도가 누적된다. 
-        _yVelocity = _yVelocity + _gravity * Time.deltaTime;
+        
+        _yVelocity += _gravity * Time.deltaTime; 
+       
+        
         // 2. 플레이어에게 y축에 있어 중력을 적용한다.
-        dir.y = _yVelocity;
+        dir.y = _yVelocity; 
 
         // 3-2. 이동하기
         //transform.position += speed * dir * Time.deltaTime;
