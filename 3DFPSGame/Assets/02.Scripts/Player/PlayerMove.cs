@@ -19,6 +19,8 @@ public class PlayerMove : MonoBehaviour
     public float StaminaConsumeSpeed = 33f; // 초당 스태미나 소모량
     public float StaminaChargeSpeed = 50;  // 초당 스태미나 충전량
 
+    public int JumpTimes = 1;  // 점프 횟수
+
     [Header("스태미나 슬라이더 UI")]
     public Slider StaminaSliderUI;
 
@@ -31,7 +33,7 @@ public class PlayerMove : MonoBehaviour
 
     // 구현 순서:
     // 1. 만약에 [Spacebar] 버튼을 누르는 순간 && 땅이면...
-    
+
     // 2. 플레이어에게 y축에 있어 점프 파워를 적용한다. 
 
 
@@ -92,12 +94,33 @@ public class PlayerMove : MonoBehaviour
         StaminaSliderUI.value = Stamina / MaxStamina;  // 0 ~ 1;//
 
         // 점프 구현
+        /*
         // 1. 만약에 [Spacebar] 버튼을 누르는 순간 && 땅이면...
         if (Input.GetKeyDown(KeyCode.Space) && _characterController.isGrounded)  
         {
             // 2. 플레이어에게 y축에 있어 점프 파워를 적용한다. 
             _yVelocity = JumpPower;
         }
+        */
+        // 점프 구현 과제: 2단 점프 구현
+        // 
+        if (Input.GetKeyDown(KeyCode.Space) && _characterController.isGrounded)
+        {
+            _yVelocity = JumpPower;
+            JumpTimes = 1;
+        }
+        else if (Input.GetKeyDown(KeyCode.Space) && _characterController.isGrounded == false)
+        {
+            if (JumpTimes == 1)
+            {
+                _yVelocity = JumpPower;
+                JumpTimes = 0;
+            }
+        }
+
+
+
+
 
 
 
@@ -105,7 +128,7 @@ public class PlayerMove : MonoBehaviour
         // 1. 중력 가속도가 누적된다. 
         _yVelocity = _yVelocity + _gravity * Time.deltaTime;
         // 2. 플레이어에게 y축에 있어 중력을 적용한다.
-       dir.y = _yVelocity;
+        dir.y = _yVelocity;
 
         // 3-2. 이동하기
         //transform.position += speed * dir * Time.deltaTime;
