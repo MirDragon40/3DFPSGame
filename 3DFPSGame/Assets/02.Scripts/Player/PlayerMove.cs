@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerMove : MonoBehaviour
 {
 
-    
+
     // 목표: 키보드 방향키(wasd)를 누르면 캐릭터를 바라보는 방향 기준으로 이동시키고 싶다. 
     // 속성:
     // - 이동속도
@@ -20,6 +20,13 @@ public class PlayerMove : MonoBehaviour
 
     [Header("스태미나 슬라이더 UI")]
     public Slider StaminaSliderUI;
+
+    private CharacterController _characterController;
+
+    private void Awake()
+    {
+        _characterController = GetComponent<CharacterController>();
+    }
 
     private void Start()
     {
@@ -63,10 +70,9 @@ public class PlayerMove : MonoBehaviour
         StaminaSliderUI.value = Stamina / MaxStamina;  // 0 ~ 1;//
 
         // 3. 이동하기
-        transform.position += speed * dir * Time.deltaTime;
+        //transform.position += speed * dir * Time.deltaTime;
+        _characterController.Move(motion: dir * speed * Time.deltaTime);
 
-
-        
         // 9번 키를 누르면 FPS 시점으로 전환
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
@@ -91,6 +97,6 @@ public class PlayerMove : MonoBehaviour
             // TPS 카메라 모드로 전환 ver3
             CameraManager.instance.SetCameraMode(CameraMode.TPS);
         }
-        
+
     }
 }

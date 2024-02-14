@@ -54,10 +54,7 @@ public class CameraManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
         DontDestroyOnLoad(this.gameObject);
-
-
     }
 
     public void SetFPSCameraMode()

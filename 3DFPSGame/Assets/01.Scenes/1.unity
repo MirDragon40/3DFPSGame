@@ -951,6 +951,8 @@ GameObject:
   - component: {fileID: 2018197501}
   - component: {fileID: 2018197500}
   - component: {fileID: 2018197499}
+  - component: {fileID: 2018197503}
+  - component: {fileID: 2018197504}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1048,6 +1050,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2018197503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2018197498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf51805df0a6261459e475acbaed171c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RotationSpeed: 500
+  Target: {fileID: 805419201}
+  Offset: {x: 0, y: 3, z: -3}
+--- !u!114 &2018197504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2018197498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63335eab79f98b5418838d6627142283, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fpsCamera: {fileID: 0}
+  tpsCamera: {fileID: 0}
+  Mode: 0
+  RotationSpeed: 200
+  _mx: 0
+  _my: 0
 --- !u!1 &2061555852
 GameObject:
   m_ObjectHideFlags: 0
@@ -1061,7 +1096,6 @@ GameObject:
   - component: {fileID: 2061555855}
   - component: {fileID: 2061555854}
   - component: {fileID: 2061555853}
-  - component: {fileID: 2061555858}
   - component: {fileID: 2061555859}
   - component: {fileID: 2061555860}
   m_Layer: 0
@@ -1174,23 +1208,6 @@ Transform:
   - {fileID: 805419201}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2061555858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2061555852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62405e7fb075d2440b097e07902b71fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MoveSpeed: 5
-  RunSpeed: 10
-  Stamina: 10
-  isRunning: 0
-  slider: {fileID: 420414451}
 --- !u!54 &2061555859
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1286,7 +1303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.5707547, b: 0.5707547, a: 1}
+  m_Color: {r: 0.57254905, g: 0.7163445, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
