@@ -57,6 +57,9 @@ public class PlayerMove : MonoBehaviour
     // 필요 속성:
     // - 벽타기 파워
     public float ClimbingPower;
+    // 벽타기 스태미너 소모량 팩터
+    public float ClimbingStaminaConsumeFactor = 1.5f;
+
     // - 벽타기 상태
     private bool _isClimbing = false;
     // 구현 순서
@@ -81,8 +84,8 @@ public class PlayerMove : MonoBehaviour
     void Update()
     {
         // 플레이어 벽타기 
-        // 1. 만약에 벽에 닿아 있는데
-        if (_characterController.collisionFlags == CollisionFlags.Sides)
+        // 1. 만약에 벽에 닿아 있는데 && 스태미너가 > 0
+        if (Stamina > 0 && _characterController.collisionFlags == CollisionFlags.Sides)
         {
             // 2. [Spacebar] 버튼을 누르고 있으면 
             if (Input.GetKey(KeyCode.Space))
@@ -91,7 +94,6 @@ public class PlayerMove : MonoBehaviour
                 _isClimbing = true;
                 _yVelocity = ClimbingPower;
             }
-
         }
 
         // 1. 키 입력 받기
@@ -104,31 +106,23 @@ public class PlayerMove : MonoBehaviour
         // Transforms direction from local space to world space.
         dir = Camera.main.transform.TransformDirection(dir); // 글로벌 좌표계 (세상의 동서남북)
 
-        // 실습 과제 1. Shift 누르고 있으면 빨리 뛰기
+
+        // 실습 과제 1. Shift 누르고 있으면 빨리 뛰기 or 
         float speed = MoveSpeed; // 5
-        if (Input.GetKey(KeyCode.LeftShift)) // 실습 과제 2. 스태미너 구현
+        if (_isClimbing || Input.GetKey(KeyCode.LeftShift)) // 실습 과제 2. 스태미너 구현
         {
             // - Shfit 누른 동안에는 스태미나가 서서히 소모된다. (3초)
-            Stamina -= StaminaConsumeSpeed * Time.deltaTime; // 초당 33씩 소모
-            if (Stamina > 0)
+            // 삼향 연산자 이용
+            float factor = _isClimbing ? ClimbingStaminaConsumeFactor : 1f;
+            Stamina -= StaminaConsumeSpeed * Time.deltaTime * factor;
+
+            // 클라이밍 상태가 아닐 때만 스피드 up!
+            if (!_isClimbing && Stamina > 0)
             {
                 speed = RunSpeed;
             }
         }
-        // player 벽타기 스테미나 구현
-        else if (Input.GetKey(KeyCode.Space))
-        {
-            // - Space 누른 동안에는 스태미나가 서서히 소모된다.
-            // 달릴때보다 1.5배 더 빠르게 닳도록
-            Stamina -= StaminaConsumeSpeed * Time.deltaTime * 1.5f;
 
-            if (Stamina < 0)
-            {
-                ClimbingPower = 0;
-                _yVelocity = 0f;
-                _isClimbing = false;
-            }
-        }
         else
         {
             // - 아니면 스태미나가 소모 되는 속도보다 빠른 속도로 충전된다 (2초)
@@ -152,9 +146,11 @@ public class PlayerMove : MonoBehaviour
         */
         // 점프 구현 과제: 2단 점프 구현
         // 땅이면 점프 횟수 초기화
+        // 땅에 닿아있을 때
         if (_characterController.isGrounded)
         {
             _isJumping = false;
+            _isClimbing = false;
             _yVelocity = 0f;
             JumpRemainCount = JumpMaxCount;
         }
