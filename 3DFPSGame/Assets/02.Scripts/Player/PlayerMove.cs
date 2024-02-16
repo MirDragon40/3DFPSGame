@@ -51,6 +51,19 @@ public class PlayerMove : MonoBehaviour
     // 1. 중력 가속도가 누적된다. 
     // 2. 플레이어에게 y축에 있어 중력을 적용한다.
 
+
+    [Header("벽타기 구현")]
+    // 목표: 벽에 닿아 있는 상태에서 스페이스바를 누르면 벽타기를 하고 싶다.
+    // 필요 속성:
+    // - 벽타기 파워
+    public float ClimbingPower;
+    // - 벽타기 상태
+    private bool _isClimbing = false;
+    // 구현 순서
+    // 1. 만약에 벽에 닿아 있는데
+    // 2. [Spacebar] 버튼을 누르고 있으면 
+    // 3. 벽을 타겠다. 
+
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
@@ -67,6 +80,20 @@ public class PlayerMove : MonoBehaviour
     // 3. 이동하기
     void Update()
     {
+        // 플레이어 벽타기 
+        // 1. 만약에 벽에 닿아 있는데
+        if (_characterController.collisionFlags == CollisionFlags.Sides)
+        {
+            // 2. [Spacebar] 버튼을 누르고 있으면 
+            if (Input.GetKey(KeyCode.Space))
+            {
+                // 3. 벽을 타겠다. 
+                _isClimbing = true;
+                _yVelocity = ClimbingPower;
+            }
+
+        }
+
         // 1. 키 입력 받기
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
@@ -88,6 +115,20 @@ public class PlayerMove : MonoBehaviour
                 speed = RunSpeed;
             }
         }
+        // player 벽타기 스테미나 구현
+        else if (Input.GetKey(KeyCode.Space))
+        {
+            // - Space 누른 동안에는 스태미나가 서서히 소모된다.
+            // 달릴때보다 1.5배 더 빠르게 닳도록
+            Stamina -= StaminaConsumeSpeed * Time.deltaTime * 1.5f;
+
+            if (Stamina < 0)
+            {
+                ClimbingPower = 0;
+                _yVelocity = 0f;
+                _isClimbing = false;
+            }
+        }
         else
         {
             // - 아니면 스태미나가 소모 되는 속도보다 빠른 속도로 충전된다 (2초)
@@ -96,6 +137,9 @@ public class PlayerMove : MonoBehaviour
 
         Stamina = Mathf.Clamp(Stamina, 0, 100);
         StaminaSliderUI.value = Stamina / MaxStamina;  // 0 ~ 1;//
+
+
+
 
         // 점프 구현
         /*
@@ -119,7 +163,6 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && (_characterController.isGrounded || (_isJumping && JumpRemainCount > 0)))
         {
             _isJumping = true;
-
             JumpRemainCount--;
 
             // 2. 플레이어에게 y축에 있어 점프 파워를 적용한다.
