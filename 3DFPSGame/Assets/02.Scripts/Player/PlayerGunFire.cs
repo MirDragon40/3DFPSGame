@@ -32,6 +32,11 @@ public class PlayerGunFire : MonoBehaviour
     // - 총알 개수 텍스트 UI
     public Text BulletNumUI;
 
+    // - 총알 재장전 로딩 텍스트 UI
+    public Text BulletRechargeUI;
+
+    // - 총알이 장전 상태인가?
+    private bool _isBulletRecharge = false;
 
 
     private void Start()
@@ -40,17 +45,24 @@ public class PlayerGunFire : MonoBehaviour
         BulletRemainCount = MaxBulletCount;
         RefreshUI();
 
+        BulletRechargeUI.enabled = false;
+
     }
     private void Update()
     {
         _timer += Time.deltaTime;
+
+        if (_isBulletRecharge)
+        {
+            return;
+        }
+        
 
         // 1. 만약에 마우스 왼쪽 버튼을 누른 상태 && 쿨타임이 다 지난 상태
         if (Input.GetMouseButton(0) && _timer >= FireCoolTime && BulletRemainCount > 0)  // 마우스 왼쪽 버튼 0
         {
             BulletRemainCount--;
             RefreshUI();
-
             _timer = 0;
             // 2. 레이(광선)을 생성하고, 위치와 방향을 설정한다.
             Ray ray = new Ray(Camera.main.transform.position, direction: Camera.main.transform.forward);
@@ -67,22 +79,35 @@ public class PlayerGunFire : MonoBehaviour
                 // 6. 이펙트가 쳐다보는 방향을 부딪힌 위치의 법선 벡터로 한다. 
                 HitEffect.gameObject.transform.forward = hitInfo.normal;
                 HitEffect.Play();  // 파티클도 오디오와같이 play를 사용해주어야 한다.
-                
             }
-
-
         }
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && !Input.GetMouseButton(0))
         {
-            this.gameObject.SetActive(true);
-            BulletRemainCount = MaxBulletCount;
-            RefreshUI();
+            _isBulletRecharge = true;
+
+            StartCoroutine(BulletRecharge_Coroutine(1.5f));
+
+
         }
+
 
     }
 
     private void RefreshUI()
     {
         BulletNumUI.text = $"{BulletRemainCount} / {MaxBulletCount}";
+    }
+    private IEnumerator BulletRecharge_Coroutine(float timer)
+    {
+        BulletRechargeUI.enabled = true;
+
+        yield return new WaitForSeconds(timer);
+
+        _isBulletRecharge = false;
+        BulletRechargeUI.enabled = false;
+        this.gameObject.SetActive(true);
+        BulletRemainCount = MaxBulletCount;
+        RefreshUI();
+
     }
 }
