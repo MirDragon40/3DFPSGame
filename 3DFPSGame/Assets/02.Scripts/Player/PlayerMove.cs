@@ -67,6 +67,10 @@ public class PlayerMove : MonoBehaviour
     // 2. [Spacebar] 버튼을 누르고 있으면 
     // 3. 벽을 타겠다. 
 
+    public int Health;
+    public int MaxHealth = 100;
+    public Slider HealthSliderUI;
+
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
@@ -168,9 +172,6 @@ public class PlayerMove : MonoBehaviour
 
 
 
-
-
-
         // 3-1. 중력 적용
         // 1. 중력 가속도가 누적된다. 
         
@@ -210,4 +211,14 @@ public class PlayerMove : MonoBehaviour
         }
 
     }
+
+    public void Hit(int damage)
+    {
+        Health -= damage;
+        if (Health <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
 }
