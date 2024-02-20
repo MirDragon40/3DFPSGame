@@ -17,6 +17,7 @@ public class Monster : MonoBehaviour, IHitable
         HealthSliderUI.value = (float)Health / (float) MaxHealth;   // 0~1
 
     }
+
     public void Init()
     {
         Health = MaxHealth;

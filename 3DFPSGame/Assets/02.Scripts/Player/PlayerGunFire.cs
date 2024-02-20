@@ -8,40 +8,40 @@ public class PlayerGunFire : MonoBehaviour
 {
 
     public int Damage = 1;
-    // ¸ñÇ¥: ¸¶¿ì½º ¿ŞÂÊ ¹öÆ°À» ´©¸£¸é ½Ã¼±ÀÌ ¹Ù¶óº¸´Â ¹æÇâÀ¸·Î ÃÑÀ» ¹ß»çÇÏ°í ½Í´Ù.
-    // ÇÊ¿ä ¼Ó¼º
-    // - ÃÑ¾Ë Æ¢´Â ÀÌÆåÆ® ÇÁ¸®Æé
+    // ëª©í‘œ: ë§ˆìš°ìŠ¤ ì™¼ìª½ ë²„íŠ¼ì„ ëˆ„ë¥´ë©´ ì‹œì„ ì´ ë°”ë¼ë³´ëŠ” ë°©í–¥ìœ¼ë¡œ ì´ì„ ë°œì‚¬í•˜ê³  ì‹¶ë‹¤.
+    // í•„ìš” ì†ì„±
+    // - ì´ì•Œ íŠ€ëŠ” ì´í™íŠ¸ í”„ë¦¬í©
     public ParticleSystem HitEffect;
 
-    // ±¸Çö ¼ø¼­:
-    // 1. ¸¸¾à¿¡ ¸¶¿ì½º ¿ŞÂÊ ¹öÆ°À» ´©¸£¸é 
-    // 2. ·¹ÀÌ(±¤¼±)À» »ı¼ºÇÏ°í, À§Ä¡¿Í ¹æÇâÀ» ¼³Á¤ÇÑ´Ù.
-    // 3. ·¹ÀÌ¸¦ ¹ß»çÇÑ´Ù. 
-    // 4. ·¹ÀÌ°¡ ºÎ‹HÈù ´ë»óÀÇ Á¤º¸¸¦ ¹Ş¾Æ¿Â´Ù.
-    // 5. ºÎµúÈù À§Ä¡¿¡ (ÃÑ¾ËÀÌ Æ¢´Â) ÀÌÆåÆ®¸¦ »ı¼ºÇÑ´Ù.
+    // êµ¬í˜„ ìˆœì„œ:
+    // 1. ë§Œì•½ì— ë§ˆìš°ìŠ¤ ì™¼ìª½ ë²„íŠ¼ì„ ëˆ„ë¥´ë©´ 
+    // 2. ë ˆì´(ê´‘ì„ )ì„ ìƒì„±í•˜ê³ , ìœ„ì¹˜ì™€ ë°©í–¥ì„ ì„¤ì •í•œë‹¤.
+    // 3. ë ˆì´ë¥¼ ë°œì‚¬í•œë‹¤. 
+    // 4. ë ˆì´ê°€ ë¶€ë”«íŒ ëŒ€ìƒì˜ ì •ë³´ë¥¼ ë°›ì•„ì˜¨ë‹¤.
+    // 5. ë¶€ë”ªíŒ ìœ„ì¹˜ì— (ì´ì•Œì´ íŠ€ëŠ”) ì´í™íŠ¸ë¥¼ ìƒì„±í•œë‹¤.
 
 
-    // - ¹ß»ç ÄğÅ¸ÀÓ
-    [Header("Gun Å¸ÀÌ¸Ó")]
+    // - ë°œì‚¬ ì¿¨íƒ€ì„
+    [Header("Gun íƒ€ì´ë¨¸")]
     public float FireCoolTime = 0.2f;
     private float _timer;
 
-    // - ½ò ¼ö ÀÖ´Â ÃÑ¾Ë °³¼ö
-    [Header("ÃÑ¾Ë °³¼ö Á¦ÇÑ")]
+    // - ì  ìˆ˜ ìˆëŠ” ì´ì•Œ ê°œìˆ˜
+    [Header("ì´ì•Œ ê°œìˆ˜ ì œí•œ")]
     public int BulletRemainCount = 30;
     public int MaxBulletCount = 30;
 
-    // - ÃÑ¾Ë °³¼ö ÅØ½ºÆ® UI
+    // - ì´ì•Œ ê°œìˆ˜ í…ìŠ¤íŠ¸ UI
     public Text BulletNumUI;
-    // - ÃÑ¾ËÀÌ ÀåÀü »óÅÂÀÎ°¡?
-    private const float RELOAD_TIME = 1.5f; // ÀçÀåÀü ½Ã°£
-    private bool _isReloading = false;      // ÀçÀåÀü ÁßÀÌ³Ä?
-    public GameObject ReloadTextObject;     // - ÃÑ¾Ë ÀçÀåÀü ·Îµù ÅØ½ºÆ® UI
+    // - ì´ì•Œì´ ì¥ì „ ìƒíƒœì¸ê°€?
+    private const float RELOAD_TIME = 1.5f; // ì¬ì¥ì „ ì‹œê°„
+    private bool _isReloading = false;      // ì¬ì¥ì „ ì¤‘ì´ëƒ?
+    public GameObject ReloadTextObject;     // - ì´ì•Œ ì¬ì¥ì „ ë¡œë”© í…ìŠ¤íŠ¸ UI
 
 
     private void Start()
     {
-        // ÃÑ¾Ë °³¼ö ÃÊ±âÈ­
+        // ì´ì•Œ ê°œìˆ˜ ì´ˆê¸°í™”
         BulletRemainCount = MaxBulletCount;
         RefreshUI();
     }
@@ -63,10 +63,10 @@ public class PlayerGunFire : MonoBehaviour
 
 
 
-        // 1. ¸¸¾à¿¡ ¸¶¿ì½º ¿ŞÂÊ ¹öÆ°À» ´©¸¥ »óÅÂ && ÄğÅ¸ÀÓÀÌ ´Ù Áö³­ »óÅÂ
-        if (Input.GetMouseButton(0) && _timer >= FireCoolTime && BulletRemainCount > 0)  // ¸¶¿ì½º ¿ŞÂÊ ¹öÆ° 0
+        // 1. ë§Œì•½ì— ë§ˆìš°ìŠ¤ ì™¼ìª½ ë²„íŠ¼ì„ ëˆ„ë¥¸ ìƒíƒœ && ì¿¨íƒ€ì„ì´ ë‹¤ ì§€ë‚œ ìƒíƒœ
+        if (Input.GetMouseButton(0) && _timer >= FireCoolTime && BulletRemainCount > 0)  // ë§ˆìš°ìŠ¤ ì™¼ìª½ ë²„íŠ¼ 0
         {
-            // ÀçÀåÀü Ãë¼Ò
+            // ì¬ì¥ì „ ì·¨ì†Œ
             if (_isReloading)
             {
                 StopAllCoroutines();
@@ -77,18 +77,18 @@ public class PlayerGunFire : MonoBehaviour
             RefreshUI();
             _timer = 0;
 
-            // 2. ·¹ÀÌ(±¤¼±)À» »ı¼ºÇÏ°í, À§Ä¡¿Í ¹æÇâÀ» ¼³Á¤ÇÑ´Ù.
+            // 2. ë ˆì´(ê´‘ì„ )ì„ ìƒì„±í•˜ê³ , ìœ„ì¹˜ì™€ ë°©í–¥ì„ ì„¤ì •í•œë‹¤.
             Ray ray = new Ray(Camera.main.transform.position, direction: Camera.main.transform.forward);
-            // 3. ·¹ÀÌ¸¦ ¹ß»çÇÑ´Ù. 
+            // 3. ë ˆì´ë¥¼ ë°œì‚¬í•œë‹¤. 
             Physics.Raycast(ray);
-            // 4. ·¹ÀÌ°¡ ºÎ‹HÈù ´ë»óÀÇ Á¤º¸¸¦ ¹Ş¾Æ¿Â´Ù.
+            // 4. ë ˆì´ê°€ ë¶€ë”«íŒ ëŒ€ìƒì˜ ì •ë³´ë¥¼ ë°›ì•„ì˜¨ë‹¤.
             RaycastHit hitInfo;
             bool IsHit = Physics.Raycast(ray, out hitInfo);
             if (IsHit)
             {
-                // ½Ç½À°úÁ¦ 18. ·¹ÀÌÀú¸¦ ¸ó½ºÅÍ¿¡°Ô ¸ÂÃâ ½Ã ¸ó½ºÅÍ Ã¼·Â ´â´Â ±â´É ±¸Çö
+                // ì‹¤ìŠµê³¼ì œ 18. ë ˆì´ì €ë¥¼ ëª¬ìŠ¤í„°ì—ê²Œ ë§ì¶œ ì‹œ ëª¬ìŠ¤í„° ì²´ë ¥ ë‹³ëŠ” ê¸°ëŠ¥ êµ¬í˜„
                 IHitable hitObject = hitInfo.collider.GetComponent<IHitable>();
-                if (hitObject != null)   // ¶§¸± ¼ö ÀÖ´Â Ä£±¸ÀÎ°¡¿ä?
+                if (hitObject != null)   // ë•Œë¦´ ìˆ˜ ìˆëŠ” ì¹œêµ¬ì¸ê°€ìš”?
                 {
                     hitObject.Hit(Damage);
                 }
@@ -101,12 +101,12 @@ public class PlayerGunFire : MonoBehaviour
                 }
                 */
 
-                // 5. ºÎµúÈù À§Ä¡¿¡ (ÃÑ¾ËÀÌ Æ¢´Â) ÀÌÆåÆ®¸¦ »ı¼ºÇÑ´Ù. 
+                // 5. ë¶€ë”ªíŒ ìœ„ì¹˜ì— (ì´ì•Œì´ íŠ€ëŠ”) ì´í™íŠ¸ë¥¼ ìƒì„±í•œë‹¤. 
                 //Debug.Log(hitInfo.point);
                 HitEffect.gameObject.transform.position = hitInfo.point;
-                // 6. ÀÌÆåÆ®°¡ ÃÄ´Ùº¸´Â ¹æÇâÀ» ºÎµúÈù À§Ä¡ÀÇ ¹ı¼± º¤ÅÍ·Î ÇÑ´Ù. 
+                // 6. ì´í™íŠ¸ê°€ ì³ë‹¤ë³´ëŠ” ë°©í–¥ì„ ë¶€ë”ªíŒ ìœ„ì¹˜ì˜ ë²•ì„  ë²¡í„°ë¡œ í•œë‹¤. 
                 HitEffect.gameObject.transform.forward = hitInfo.normal;
-                HitEffect.Play();  // ÆÄÆ¼Å¬µµ ¿Àµğ¿À¿Í°°ÀÌ play¸¦ »ç¿ëÇØÁÖ¾î¾ß ÇÑ´Ù.
+                HitEffect.Play();  // íŒŒí‹°í´ë„ ì˜¤ë””ì˜¤ì™€ê°™ì´ playë¥¼ ì‚¬ìš©í•´ì£¼ì–´ì•¼ í•œë‹¤.
             }
         }
 
@@ -124,7 +124,7 @@ public class PlayerGunFire : MonoBehaviour
     {
         _isReloading = true;
 
-        // RÅ° ´©¸£¸é 1.5ÃÊ ÈÄ ÀçÀåÀü, (Áß°£¿¡ ÃÑ ½î´Â ÇàÀ§¸¦ ÇÏ¸é ÀçÀåÀü Ãë¼Ò)
+        // Rí‚¤ ëˆ„ë¥´ë©´ 1.5ì´ˆ í›„ ì¬ì¥ì „, (ì¤‘ê°„ì— ì´ ì˜ëŠ” í–‰ìœ„ë¥¼ í•˜ë©´ ì¬ì¥ì „ ì·¨ì†Œ)
         yield return new WaitForSeconds(RELOAD_TIME);
         BulletRemainCount = MaxBulletCount;
         RefreshUI();

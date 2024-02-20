@@ -4,41 +4,41 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-    // ¸ñÇ¥: ¼ö·ùÅº Æø¹ß ¹üÀ§ µ¥¹ÌÁö ±â´É ±¸Çö
-    // ÇÊ¿ä ¼Ó¼º:
-    // - ¹üÀ§
+    // ëª©í‘œ: ìˆ˜ë¥˜íƒ„ í­ë°œ ë²”ìœ„ ë°ë¯¸ì§€ ê¸°ëŠ¥ êµ¬í˜„
+    // í•„ìš” ì†ì„±:
+    // - ë²”ìœ„
     public float ExplosionRadius;
-    // ±¸Çö ¼ø¼­:
-    // 1. ÅÍÁú ¶§
-    // 2. ¹üÀ§ ¾È¿¡ ÀÖ´Â ¸ğµç Äİ¶óÀÌ´õ¸¦ Ã£´Â´Ù.
-    // 3. Ã£Àº Äİ¶óÀÌ´õ Áß¿¡¼­ Å¸°İ °¡´ÉÇÑ(IHitable) ¿ÀºêÁ§Æ®¸¦ Ã£´Â´Ù.
-    // 4. Hit() ÇÑ´Ù.
+    // êµ¬í˜„ ìˆœì„œ:
+    // 1. í„°ì§ˆ ë•Œ
+    // 2. ë²”ìœ„ ì•ˆì— ìˆëŠ” ëª¨ë“  ì½œë¼ì´ë”ë¥¼ ì°¾ëŠ”ë‹¤.
+    // 3. ì°¾ì€ ì½œë¼ì´ë” ì¤‘ì—ì„œ íƒ€ê²© ê°€ëŠ¥í•œ(IHitable) ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ëŠ”ë‹¤.
+    // 4. Hit() í•œë‹¤.
 
 
     public int Damage = 60;
 
-    // ½Ç½À °úÁ¦ 8. ¼ö·ùÅºÀÌ Æø¹ßÇÒ ¶§(»ç¶óÁú ¶§) Æø¹ß ÀÌÆåÆ®¸¦ ÀÚ±â À§Ä¡¿¡ »ı¼ºÇÏ±â
+    // ì‹¤ìŠµ ê³¼ì œ 8. ìˆ˜ë¥˜íƒ„ì´ í­ë°œí•  ë•Œ(ì‚¬ë¼ì§ˆ ë•Œ) í­ë°œ ì´í™íŠ¸ë¥¼ ìê¸° ìœ„ì¹˜ì— ìƒì„±í•˜ê¸°
     public GameObject BombEffectPrefab;
 
 
-    // 1. ÅÍÁú ¶§
+    // 1. í„°ì§ˆ ë•Œ
     private void OnCollisionEnter(Collision other)
     {
-        gameObject.SetActive(false); // Ã¢°í¿¡ ³Ö´Â´Ù.
+        gameObject.SetActive(false); // ì°½ê³ ì— ë„£ëŠ”ë‹¤.
 
         GameObject effect = Instantiate(BombEffectPrefab);
         effect.transform.position = this.gameObject.transform.position;
 
-        // 2. ¹üÀ§ ¾È¿¡ ÀÖ´Â ¸ğµç Äİ¶óÀÌ´õ¸¦ Ã£´Â´Ù.
-        // -> ÇÇÁ÷½º, ¿À¹ö·¦ ÇÔ¼ö´Â Æ¯Á¤ ¿µ¿ª(radius) ¾È¿¡ÀÖ´Â Æ¯Á¤ ·¹ÀÌ¾îµéÀÇ °ÔÀÓ ¿ÀºêÁ§Æ®ÀÇ
-        //    Äİ¶óÀÌ´õ ÄÄÆ÷³ÍÆ®µéÀ» ¸ğµÎ Ã£¾Æ ¹è¿­·Î º¯È¯ÇÏ´Â ÇÔ¼ö
-        //    ¿µ¿ªÀÇ ÇüÅÂ: ½ºÇÇ¾î, Å¥ºê, Ä¸½¶
+        // 2. ë²”ìœ„ ì•ˆì— ìˆëŠ” ëª¨ë“  ì½œë¼ì´ë”ë¥¼ ì°¾ëŠ”ë‹¤.
+        // -> í”¼ì§ìŠ¤, ì˜¤ë²„ë© í•¨ìˆ˜ëŠ” íŠ¹ì • ì˜ì—­(radius) ì•ˆì—ìˆëŠ” íŠ¹ì • ë ˆì´ì–´ë“¤ì˜ ê²Œì„ ì˜¤ë¸Œì íŠ¸ì˜
+        //    ì½œë¼ì´ë” ì»´í¬ë„ŒíŠ¸ë“¤ì„ ëª¨ë‘ ì°¾ì•„ ë°°ì—´ë¡œ ë³€í™˜í•˜ëŠ” í•¨ìˆ˜
+        //    ì˜ì—­ì˜ í˜•íƒœ: ìŠ¤í”¼ì–´, íë¸Œ, ìº¡ìŠ
 
         int layer = LayerMask.NameToLayer("Monster") /*| LayerMask.NameToLayer("Player")*/;
-        Collider[] colliders = Physics.OverlapSphere(transform.position, ExplosionRadius, layer);   // ºñÆ® ÇÕ ¿¬»êÀÚ
+        Collider[] colliders = Physics.OverlapSphere(transform.position, ExplosionRadius, layer);   // ë¹„íŠ¸ í•© ì—°ì‚°ì
         //Collider[] colliders = Physics.OverlapSphere(transform.position, ExplosionRadius, 1 << 8 | 1 << 9);
 
-        // 3. Ã£Àº Äİ¶óÀÌ´õ Áß¿¡¼­ Å¸°İ °¡´ÉÇÑ(IHitable) ¿ÀºêÁ§Æ®¸¦ Ã£¾Æ¼­ Hit() ÇÑ´Ù.
+        // 3. ì°¾ì€ ì½œë¼ì´ë” ì¤‘ì—ì„œ íƒ€ê²© ê°€ëŠ¥í•œ(IHitable) ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ì•„ì„œ Hit() í•œë‹¤.
         foreach (Collider collider in colliders)
         {
             IHitable hitable = collider.gameObject.GetComponent<IHitable>();

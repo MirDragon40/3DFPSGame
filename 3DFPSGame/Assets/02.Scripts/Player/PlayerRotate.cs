@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class PlayerRotate : MonoBehaviour
 {
-    // ¸ñÇ¥: ¸¶¿ì½º¸¦ Á¶ÀÛÇÏ¸é ÇÃ·¹ÀÌ¾î¸¦ ÁÂ¿ì¹æÇâÀ¸·Î È¸Àü ½ÃÅ°°í ½Í´Ù.
-    // ÇÊ¿ä ¼Ó¼º:
-    // - È¸Àü ¼Óµµ
-    public float RotationSpeed = 200; // ÃÊ´ç 200µµ±îÁö È¸Àü °¡´ÉÇÑ ¼Óµµ
-    // ´©ÀûÇÒ x°¢µµ
+    // ëª©í‘œ: ë§ˆìš°ìŠ¤ë¥¼ ì¡°ì‘í•˜ë©´ í”Œë ˆì´ì–´ë¥¼ ì¢Œìš°ë°©í–¥ìœ¼ë¡œ íšŒì „ ì‹œí‚¤ê³  ì‹¶ë‹¤.
+    // í•„ìš” ì†ì„±:
+    // - íšŒì „ ì†ë„
+    public float RotationSpeed = 200; // ì´ˆë‹¹ 200ë„ê¹Œì§€ íšŒì „ ê°€ëŠ¥í•œ ì†ë„
+    // ëˆ„ì í•  xê°ë„
     private float _mx = 0;
 
     void Update()
     {
-        // 1. ¸¶¿ì½º ÀÔ·Â(drag) ¹Ş´Â´Ù.
+        // 1. ë§ˆìš°ìŠ¤ ì…ë ¥(drag) ë°›ëŠ”ë‹¤.
         float mouseX = Input.GetAxis("Mouse X");
 
-        // 2. ¸¶¿ì½º ÀÔ·Â °ª¸¸Å­ x°ªÀ» ´©ÀûÇÑ´Ù.
+        // 2. ë§ˆìš°ìŠ¤ ì…ë ¥ ê°’ë§Œí¼ xê°’ì„ ëˆ„ì í•œë‹¤.
         _mx += mouseX * RotationSpeed * Time.deltaTime;
         //_mx = Mathf.Clamp(_mx, -270f, 270f);
 
-        // 3. ´©ÀûÇÑ °ª¿¡ µû¶ó È¸ÀüÇÑ´Ù.
+        // 3. ëˆ„ì í•œ ê°’ì— ë”°ë¼ íšŒì „í•œë‹¤.
         transform.eulerAngles = new Vector3(0f, _mx, 0);
     }
 }

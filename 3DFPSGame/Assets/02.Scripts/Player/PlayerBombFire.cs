@@ -6,35 +6,35 @@ using UnityEngine.UI;
 
 public class PlayerBombFire : MonoBehaviour
 {
-    // ¸ñÇ¥: ¸¶¿ì½º ¿À¸¥ÂÊ ¹öÆ°À» ´©¸£¸é ½Ã¼±ÀÌ ¹Ù¶óº¸´Â ¹æÇâÀ¸·Î ¼ö·ùÅºÀ» ´øÁö°í ½Í´Ù.
-    // ÇÊ¿ä ¼Ó¼º:
-    // - ¼ö·ùÅº ÇÁ¸®ÆÕ
+    // ëª©í‘œ: ë§ˆìš°ìŠ¤ ì˜¤ë¥¸ìª½ ë²„íŠ¼ì„ ëˆ„ë¥´ë©´ ì‹œì„ ì´ ë°”ë¼ë³´ëŠ” ë°©í–¥ìœ¼ë¡œ ìˆ˜ë¥˜íƒ„ì„ ë˜ì§€ê³  ì‹¶ë‹¤.
+    // í•„ìš” ì†ì„±:
+    // - ìˆ˜ë¥˜íƒ„ í”„ë¦¬íŒ¹
     public GameObject BombPrefab;
-    // - ¼ö·ùÅº ´øÁö´Â À§Ä¡
+    // - ìˆ˜ë¥˜íƒ„ ë˜ì§€ëŠ” ìœ„ì¹˜
     public Transform FirePosition;
-    // - ¼ö·ùÅº ´øÁö´Â ÆÄ¿ö
+    // - ìˆ˜ë¥˜íƒ„ ë˜ì§€ëŠ” íŒŒì›Œ
     public float ThrowPower = 15f;
 
-    // ÆøÅº °³¼ö 3°³·Î Á¦ÇÑ
+    // í­íƒ„ ê°œìˆ˜ 3ê°œë¡œ ì œí•œ
     public int BombRemainCount;
     public int BombMaxCount = 3;
 
-    // UI À§¿¡ text·Î Ç¥½ÃÇÏ±â (ex. 1/3)
+    // UI ìœ„ì— textë¡œ í‘œì‹œí•˜ê¸° (ex. 1/3)
     public Text BombTextUI;
 
-    // ½Ç½À °úÁ¦ 10. ÆøÅº¿¡ ¿ÀºêÁ§Æ® Ç®¸µ(Ã¢°í) Àû¿ë
-    public List<GameObject> BombPool; // ÆøÅº Ã¢°í
+    // ì‹¤ìŠµ ê³¼ì œ 10. í­íƒ„ì— ì˜¤ë¸Œì íŠ¸ í’€ë§(ì°½ê³ ) ì ìš©
+    public List<GameObject> BombPool; // í­íƒ„ ì°½ê³ 
     public int BombPoolSize = 5;
 
     private void Start()
     {
-        // ÆøÅº Ã¢°í »ı¼º
+        // í­íƒ„ ì°½ê³  ìƒì„±
         BombPool = new List<GameObject>();
-        for (int i = 0; i < BombPoolSize; i++) // »ı¼ºÇÒ ÆøÅº °³¼ö ¸¸Å­ ¹İº¹
+        for (int i = 0; i < BombPoolSize; i++) // ìƒì„±í•  í­íƒ„ ê°œìˆ˜ ë§Œí¼ ë°˜ë³µ
         {
-            GameObject bombObject = Instantiate(BombPrefab); // 1. »ı¼º
-            bombObject.SetActive(false);                     // 2. ºñÈ°¼ºÈ­
-            BombPool.Add(bombObject);                        // 3. Ã¢°í¿¡ Áı¾î ³Ö´Â´Ù.
+            GameObject bombObject = Instantiate(BombPrefab); // 1. ìƒì„±
+            bombObject.SetActive(false);                     // 2. ë¹„í™œì„±í™”
+            BombPool.Add(bombObject);                        // 3. ì°½ê³ ì— ì§‘ì–´ ë„£ëŠ”ë‹¤.
         }
 
         BombRemainCount = BombMaxCount;
@@ -49,29 +49,29 @@ public class PlayerBombFire : MonoBehaviour
 
     private void Update()
     {
-        /* ¼ö·ùÅº ÅõÃ´ */
-        // 1. ¸¶¿ì½º ¿À¸¥ÂÊ ¹öÆ°À» ´­·¶À» ¶§ && ¼ö·ùÅº °³¼ö°¡ 0º¸´Ù Å©¸é
+        /* ìˆ˜ë¥˜íƒ„ íˆ¬ì²™ */
+        // 1. ë§ˆìš°ìŠ¤ ì˜¤ë¥¸ìª½ ë²„íŠ¼ì„ ëˆŒë €ì„ ë•Œ && ìˆ˜ë¥˜íƒ„ ê°œìˆ˜ê°€ 0ë³´ë‹¤ í¬ë©´
         if (Input.GetMouseButtonDown(1) && BombRemainCount > 0)
         {
             BombRemainCount--;
 
             RefreshUI();
 
-            // 2. Ã¢°í¿¡¼­ ¼ö·ùÅºÀ» ²¨³½ ´ÙÀ½ ´øÁö´Â À§Ä¡·Î Á¶Àı
+            // 2. ì°½ê³ ì—ì„œ ìˆ˜ë¥˜íƒ„ì„ êº¼ë‚¸ ë‹¤ìŒ ë˜ì§€ëŠ” ìœ„ì¹˜ë¡œ ì¡°ì ˆ
             GameObject bomb = null;
-            for (int i = 0; i < BombPool.Count; ++i)        // 1. Ã¢°í¸¦ µÚÁø´Ù.
+            for (int i = 0; i < BombPool.Count; ++i)        // 1. ì°½ê³ ë¥¼ ë’¤ì§„ë‹¤.
             {
-                if (BombPool[i].activeInHierarchy == false) // 2. ¾µ¸¸ÇÑ ÆøÅºÀ» Ã£´Â´Ù.
+                if (BombPool[i].activeInHierarchy == false) // 2. ì“¸ë§Œí•œ í­íƒ„ì„ ì°¾ëŠ”ë‹¤.
                 {
                     bomb = BombPool[i];
-                    bomb.SetActive(true);                   // 3. ²¨³½´Ù.
+                    bomb.SetActive(true);                   // 3. êº¼ë‚¸ë‹¤.
                     break;
                 }
             }
 
             bomb.transform.position = FirePosition.position;
 
-            // 3. ½Ã¼±ÀÌ ¹Ù¶óº¸´Â ¹æÇâ(Ä«¸Ş¶ó°¡ ¹Ù¶óº¸´Â ¹æÇâ = Ä«¸Ş¶óÀÇ Àü¹æ) À¸·Î ¼ö·ùÅº ÅõÃ´
+            // 3. ì‹œì„ ì´ ë°”ë¼ë³´ëŠ” ë°©í–¥(ì¹´ë©”ë¼ê°€ ë°”ë¼ë³´ëŠ” ë°©í–¥ = ì¹´ë©”ë¼ì˜ ì „ë°©) ìœ¼ë¡œ ìˆ˜ë¥˜íƒ„ íˆ¬ì²™
             Rigidbody rigidbody = bomb.GetComponent<Rigidbody>();
             rigidbody.velocity = Vector3.zero;
             rigidbody.AddForce(Camera.main.transform.forward * ThrowPower, ForceMode.Impulse);
