@@ -28,7 +28,7 @@ public class PlayerGunFire : MonoBehaviour
 
     private const int DefaultFOV = 60;
     private const int ZoomFOV = 20;
-    private bool _isZoomMode = false; // 줌 모드냐?
+    private bool _isZoomMode = false; // 줌 모드인가?
 
     public GameObject CrosshairUI;
     public GameObject CrosshairZoomUI;
@@ -47,9 +47,6 @@ public class PlayerGunFire : MonoBehaviour
     // 무기 이미지 UI
     public Image GunImageUI;
 
-    // 줌 이미지
-    public Image ZoomImageUI;
-
 
     private void Start()
     {
@@ -60,42 +57,46 @@ public class PlayerGunFire : MonoBehaviour
         RefreshGun();
 
         // 처음 시작할 때 라이플 
-        ZoomImageUI.enabled = false;
+    }
+
+    // 줌 모드에 따라 카메라 FOV 수정해주는 메서드
+
+    private void RefreshZoomMode()
+    {
+        if (!_isZoomMode)
+        {
+            
+            Camera.main.fieldOfView = DefaultFOV;
+        }
+        else
+        {
+           
+            Camera.main.fieldOfView = ZoomFOV;
+        }
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(2))
+        // 마우스 휠 버튼 눌렀을 때 && 현재 총이 스나이퍼
+        if (Input.GetMouseButtonDown(2) && CurrentGun.GType == GunType.Sniper)
         {
-            if (_isZoomMode)
-            {
-                _isZoomMode = false;
-                Camera.main.fieldOfView = DefaultFOV;
-            }
-            else
-            {
-                _isZoomMode = true;
-                Camera.main.fieldOfView = ZoomFOV;
-            }
+            _isZoomMode = !_isZoomMode;
+
+            RefreshZoomMode();
+            RefreshUI();
         }
 
         if (Input.GetKeyDown(KeyCode.LeftBracket))
         {
+
             // 뒤로가기
             _currentGunIndex--;
             if (_currentGunIndex < 0)
             {
                 _currentGunIndex = GunInventory.Count - 1;
             }
-            else if (_currentGunIndex == 1)
-            {
-                ZoomImageUI.enabled = true;
-            }
-            else
-            {
-                ZoomImageUI.enabled = false;
-
-            }
+            _isZoomMode = false;
+            RefreshZoomMode();
             CurrentGun = GunInventory[_currentGunIndex];
             RefreshGun();
             RefreshUI();
@@ -108,15 +109,8 @@ public class PlayerGunFire : MonoBehaviour
             {
                 _currentGunIndex = 0;
             }
-            else if (_currentGunIndex == 1)
-            {
-                ZoomImageUI.enabled = true;
-            }
-            else
-            {
-                ZoomImageUI.enabled = false;
-            }
-
+            _isZoomMode = false;
+            RefreshZoomMode();
             CurrentGun = GunInventory[_currentGunIndex];
             RefreshGun();
             RefreshUI();
@@ -126,18 +120,20 @@ public class PlayerGunFire : MonoBehaviour
         {
             _currentGunIndex = 0;
             CurrentGun = GunInventory[0];
+            _isZoomMode = false;
+            RefreshZoomMode();
             RefreshGun();
             RefreshUI();
-            ZoomImageUI.enabled = false;
 
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             _currentGunIndex = 1;
             CurrentGun = GunInventory[1];
+            _isZoomMode = false;
+            RefreshZoomMode();
             RefreshGun();
             RefreshUI();
-            ZoomImageUI.enabled = true;
 
 
         }
@@ -145,9 +141,10 @@ public class PlayerGunFire : MonoBehaviour
         {
             _currentGunIndex = 2;
             CurrentGun = GunInventory[2];
+            _isZoomMode = false;
+            RefreshZoomMode();
             RefreshGun();
             RefreshUI();
-            ZoomImageUI.enabled = false;
 
         }
 
@@ -210,8 +207,6 @@ public class PlayerGunFire : MonoBehaviour
                 HitEffect.Play();  // 파티클도 오디오와같이 play를 사용해주어야 한다.
             }
         }
-
-
     }
 
 
