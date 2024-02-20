@@ -2,37 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 1ÀÎÄª ½´ÆÃ 
+// 1ì¸ì¹­ ìŠˆíŒ… 
 
 public class FPSCamera : MonoBehaviour
 {
 
-    // ¸ñÇ¥: ¸¶¿ì½º¸¦ Á¶ÀÛÇÏ¸é Ä«¸Þ¶ó¸¦ ±× ¹æÇâÀ¸·Î È¸Àü½ÃÅ°°í ½Í´Ù.
-    // ÇÊ¿ä ¼Ó¼º: È¸Àü ¼Óµµ, ´©ÀûÇÒ x°¢µµ¿Í y°¢µµ 
-    // - È¸Àü ¼Óµµ
-    public float RotationSpeed = 200;  // ÃÊ´ç 200ÃÊ±îÁö È¸Àü °¡´ÉÇÑ ¼Óµµ
-    // ´©ÀûÇÒ x°¢µµ¿Í y °¢µµ
+    // ëª©í‘œ: ë§ˆìš°ìŠ¤ë¥¼ ì¡°ìž‘í•˜ë©´ ì¹´ë©”ë¼ë¥¼ ê·¸ ë°©í–¥ìœ¼ë¡œ íšŒì „ì‹œí‚¤ê³  ì‹¶ë‹¤.
+    // í•„ìš” ì†ì„±: íšŒì „ ì†ë„, ëˆ„ì í•  xê°ë„ì™€ yê°ë„ 
+    // - íšŒì „ ì†ë„
+    public float RotationSpeed = 200;  // ì´ˆë‹¹ 200ì´ˆê¹Œì§€ íšŒì „ ê°€ëŠ¥í•œ ì†ë„
+    // ëˆ„ì í•  xê°ë„ì™€ y ê°ë„
     public float _mx = 0;
     public float _my = 0;
 
-    /** Ä«¸Þ¶ó ÀÌµ¿ **/
-    // ¸ñÇ¥: Ä«¸Þ¶ó¸¦ Ä³¸¯ÅÍÀÇ ´«À¸·Î ÀÌµ¿½ÃÅ°°í½Í´Ù.
-    // ÇÊ¿ä¼Ó¼º:
-    // - Ä³¸¯ÅÍÀÇ ´« À§Ä¡
+    /** ì¹´ë©”ë¼ ì´ë™ **/
+    // ëª©í‘œ: ì¹´ë©”ë¼ë¥¼ ìºë¦­í„°ì˜ ëˆˆìœ¼ë¡œ ì´ë™ì‹œí‚¤ê³ ì‹¶ë‹¤.
+    // í•„ìš”ì†ì„±:
+    // - ìºë¦­í„°ì˜ ëˆˆ ìœ„ì¹˜
     public Transform Target;
 
 
-    // ¼ø¼­:
-    // 1. ¸¶¿ì½º¸¦ ÀÔ·Â(Drag) ¹Þ´Â´Ù.
-    // 2. ¸¶¿ì½º ÀÔ·Â °ªÀ» ÀÌ¿ëÇØ È¸Àü ¹æÇâÀ» ±¸ÇÑ´Ù. 
-    // 3. È¸Àü ¹æÇâ È¸ÀüÇÑ´Ù.
+    // ìˆœì„œ:
+    // 1. ë§ˆìš°ìŠ¤ë¥¼ ìž…ë ¥(Drag) ë°›ëŠ”ë‹¤.
+    // 2. ë§ˆìš°ìŠ¤ ìž…ë ¥ ê°’ì„ ì´ìš©í•´ íšŒì „ ë°©í–¥ì„ êµ¬í•œë‹¤. 
+    // 3. íšŒì „ ë°©í–¥ íšŒì „í•œë‹¤.
 
 
     private void Start()
     {
-        // ¸¶¿ì½º Ä¿¼­¸¦ ¼û±â´Â ÄÚµå
+        // ë§ˆìš°ìŠ¤ ì»¤ì„œë¥¼ ìˆ¨ê¸°ëŠ” ì½”ë“œ
         Cursor.visible = false;
-        // ¸¶¿ì½º¸¦ °íÁ¤½ÃÅ°´Â ÄÚµå
+        // ë§ˆìš°ìŠ¤ë¥¼ ê³ ì •ì‹œí‚¤ëŠ” ì½”ë“œ
         Cursor.lockState = CursorLockMode.Locked;
 
     }
@@ -40,32 +40,32 @@ public class FPSCamera : MonoBehaviour
     private void LateUpdate()
 
     {
-        // 1. Ä³¸¯ÅÍÀÇ ´« À§Ä¡·Î Ä«¸Þ¶ó¸¦ ÀÌµ¿½ÃÅ²´Ù. 
+        // 1. ìºë¦­í„°ì˜ ëˆˆ ìœ„ì¹˜ë¡œ ì¹´ë©”ë¼ë¥¼ ì´ë™ì‹œí‚¨ë‹¤. 
         transform.position = Target.transform.position;
 
-        // 1. ¸¶¿ì½º¸¦ ÀÔ·Â(Drag) ¹Þ´Â´Ù.
-        float mouseX = Input.GetAxis("Mouse X");  // ¹æÇâ¿¡ µû¶ó -1 ~ 1 »çÀÌÀÇ °ª º¯È¯
+        // 1. ë§ˆìš°ìŠ¤ë¥¼ ìž…ë ¥(Drag) ë°›ëŠ”ë‹¤.
+        float mouseX = Input.GetAxis("Mouse X");  // ë°©í–¥ì— ë”°ë¼ -1 ~ 1 ì‚¬ì´ì˜ ê°’ ë³€í™˜
         float mouseY = Input.GetAxis("Mouse Y");
         //Debug.Log(message: $"GetAxis: {mouseX} {mouseY}");
-        //Vector2 mousePosition = Input.mousePosition;  // ÁøÂ¥ ¸¶¿ì½º ÁÂÇ¥°ª
+        //Vector2 mousePosition = Input.mousePosition;  // ì§„ì§œ ë§ˆìš°ìŠ¤ ì¢Œí‘œê°’
         //Debug.Log(message: $"mousePosition: {mousePosition.x}, {mousePosition.y}");
 
-        // 2. ¸¶¿ì½º ÀÔ·Â °ªÀ» ÀÌ¿ëÇØ È¸Àü ¹æÇâÀ» ±¸ÇÑ´Ù. 
+        // 2. ë§ˆìš°ìŠ¤ ìž…ë ¥ ê°’ì„ ì´ìš©í•´ íšŒì „ ë°©í–¥ì„ êµ¬í•œë‹¤. 
         Vector3 rotationDir = new Vector3(mouseX, mouseY, z: 0);
-        // rotationDir.Normalize();   // Á¤±ÔÈ­
+        // rotationDir.Normalize();   // ì •ê·œí™”
 
 
 
-        // 3. È¸Àü ¹æÇâ È¸ÀüÇÑ´Ù.
-        // »õ·Î¿î À§Ä¡ = ÀÌÀü À§Ä¡ * ¹æÇâ * ¼Óµµ * ½Ã°£
-        // »õ·Î¿î È¸Àü = ÀÌÀü È¸Àü + ¹æÇâ * ¼Óµµ * ½Ã°£ 
+        // 3. íšŒì „ ë°©í–¥ íšŒì „í•œë‹¤.
+        // ìƒˆë¡œìš´ ìœ„ì¹˜ = ì´ì „ ìœ„ì¹˜ * ë°©í–¥ * ì†ë„ * ì‹œê°„
+        // ìƒˆë¡œìš´ íšŒì „ = ì´ì „ íšŒì „ + ë°©í–¥ * ì†ë„ * ì‹œê°„ 
         //transform.eulerAngles += rotationDir * RotationSpeed * Time.deltaTime;
 
-        // 3-1. È¸Àü ¹æÇâ¿¡ µû¶ó ¸¶¿ì½º ÀÔ·Â °ª ¸¸Å­ ¹Ì¸® ´©Àû½ÃÅ²´Ù. 
+        // 3-1. íšŒì „ ë°©í–¥ì— ë”°ë¼ ë§ˆìš°ìŠ¤ ìž…ë ¥ ê°’ ë§Œí¼ ë¯¸ë¦¬ ëˆ„ì ì‹œí‚¨ë‹¤. 
         _mx += +rotationDir.x * RotationSpeed * Time.deltaTime;
         _my += +rotationDir.y * RotationSpeed * Time.deltaTime;
 
-        // 4. ½Ã¼±ÀÇ »óÇÏ Á¦ÇÑÀ» -90 ~ 90µµ »çÀÌ·Î Á¦ÇÑÇÏ°í ½Í´Ù. 
+        // 4. ì‹œì„ ì˜ ìƒí•˜ ì œí•œì„ -90 ~ 90ë„ ì‚¬ì´ë¡œ ì œí•œí•˜ê³  ì‹¶ë‹¤. 
         //Vector3 rotation = transform.eulerAngles;
 
         //rotation.x = Mathf.Clamp(value: rotation.x, min: -90f, max: 90f);
@@ -91,10 +91,10 @@ public class FPSCamera : MonoBehaviour
         }
         */
 
-        // ¿ÀÀÏ·¯ °¢µµÀÇ ´ÜÁ¡
-        // 1. Áü¹ú¶ô Çö»ó
-        // 2. 0º¸´Ù ÀÛ¾ÆÁö¸é -1ÀÌ ¾Æ´Ñ 359(360-1)°¡ µÈ´Ù. (À¯´ÏÆ¼ ³»ºÎ¿¡¼­ ÀÌ·¸°Ô ÀÚµ¿¿¬»ê)
-        // À§ ¹®Á¦ ÇØ°áÀ» À§ÇØ¼­ ¿ì¸®°¡ ¹Ì¸® ¿¬»êÀ» ÇØÁà¾ß ÇÑ´Ù. 
+        // ì˜¤ì¼ëŸ¬ ê°ë„ì˜ ë‹¨ì 
+        // 1. ì§ë²Œë½ í˜„ìƒ
+        // 2. 0ë³´ë‹¤ ìž‘ì•„ì§€ë©´ -1ì´ ì•„ë‹Œ 359(360-1)ê°€ ëœë‹¤. (ìœ ë‹ˆí‹° ë‚´ë¶€ì—ì„œ ì´ë ‡ê²Œ ìžë™ì—°ì‚°)
+        // ìœ„ ë¬¸ì œ í•´ê²°ì„ ìœ„í•´ì„œ ìš°ë¦¬ê°€ ë¯¸ë¦¬ ì—°ì‚°ì„ í•´ì¤˜ì•¼ í•œë‹¤. 
 
     }
 }

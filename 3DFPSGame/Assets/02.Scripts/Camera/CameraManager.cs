@@ -18,8 +18,8 @@ public class CameraManager : MonoBehaviour
 
     public CameraMode Mode = CameraMode.FPS;
 
-    public float RotationSpeed = 200;  // ÃÊ´ç 200ÃÊ±îÁö È¸Àü °¡´ÉÇÑ ¼Óµµ
-    // ´©ÀûÇÒ x°¢µµ¿Í y °¢µµ
+    public float RotationSpeed = 200;  // ì´ˆë‹¹ 200ì´ˆê¹Œì§€ íšŒì „ ê°€ëŠ¥í•œ ì†ë„
+    // ëˆ„ì í•  xê°ë„ì™€ y ê°ë„
     public float _mx = 0;
     public float _my = 0;
 
@@ -44,7 +44,7 @@ public class CameraManager : MonoBehaviour
     private void Awake()
     {
 
-        // ½Ì±ÛÅæ ÆĞÅÏ : ¿ÀÁ÷ ÇÑ°³ÀÇ Å¬·¡½º ÀÎ½ºÅÏ½º¸¦ °®µµ·Ï º¸Àå
+        // ì‹±ê¸€í†¤ íŒ¨í„´ : ì˜¤ì§ í•œê°œì˜ í´ë˜ìŠ¤ ì¸ìŠ¤í„´ìŠ¤ë¥¼ ê°–ë„ë¡ ë³´ì¥
         if (instance == null)
         {
             instance = this;

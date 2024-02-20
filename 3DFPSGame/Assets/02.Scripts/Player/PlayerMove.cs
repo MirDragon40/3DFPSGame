@@ -8,21 +8,21 @@ public class PlayerMove : MonoBehaviour
 {
 
 
-    // ¸ñÇ¥: Å°º¸µå ¹æÇâÅ°(wasd)¸¦ ´©¸£¸é Ä³¸¯ÅÍ¸¦ ¹Ù¶óº¸´Â ¹æÇâ ±âÁØÀ¸·Î ÀÌµ¿½ÃÅ°°í ½Í´Ù. 
-    // ¼Ó¼º:
-    // - ÀÌµ¿¼Óµµ
-    public float MoveSpeed = 5;     // ÀÏ¹İ ¼Óµµ
-    public float RunSpeed = 10;    // ¶Ù´Â ¼Óµµ
+    // ëª©í‘œ: í‚¤ë³´ë“œ ë°©í–¥í‚¤(wasd)ë¥¼ ëˆ„ë¥´ë©´ ìºë¦­í„°ë¥¼ ë°”ë¼ë³´ëŠ” ë°©í–¥ ê¸°ì¤€ìœ¼ë¡œ ì´ë™ì‹œí‚¤ê³  ì‹¶ë‹¤. 
+    // ì†ì„±:
+    // - ì´ë™ì†ë„
+    public float MoveSpeed = 5;     // ì¼ë°˜ ì†ë„
+    public float RunSpeed = 10;    // ë›°ëŠ” ì†ë„
 
-    public float Stamina = 100;             // ½ºÅÂ¹Ì³ª
-    public const float MaxStamina = 100;    // ½ºÅÂ¹Ì³ª ÃÖ´ë·®
-    public float StaminaConsumeSpeed = 33f; // ÃÊ´ç ½ºÅÂ¹Ì³ª ¼Ò¸ğ·®
-    public float StaminaChargeSpeed = 50;  // ÃÊ´ç ½ºÅÂ¹Ì³ª ÃæÀü·®
+    public float Stamina = 100;             // ìŠ¤íƒœë¯¸ë‚˜
+    public const float MaxStamina = 100;    // ìŠ¤íƒœë¯¸ë‚˜ ìµœëŒ€ëŸ‰
+    public float StaminaConsumeSpeed = 33f; // ì´ˆë‹¹ ìŠ¤íƒœë¯¸ë‚˜ ì†Œëª¨ëŸ‰
+    public float StaminaChargeSpeed = 50;  // ì´ˆë‹¹ ìŠ¤íƒœë¯¸ë‚˜ ì¶©ì „ëŸ‰
 
-    [Header("½ºÅÂ¹Ì³ª ½½¶óÀÌ´õ UI")]
+    [Header("ìŠ¤íƒœë¯¸ë‚˜ ìŠ¬ë¼ì´ë” UI")]
     public Slider StaminaSliderUI;
 
-    [Header("ÇÃ·¹ÀÌ¾î Á¡ÇÁ")]
+    [Header("í”Œë ˆì´ì–´ ì í”„")]
     public int JumpMaxCount = 2;
     public int JumpRemainCount;
     private bool _isJumping = false;
@@ -30,42 +30,42 @@ public class PlayerMove : MonoBehaviour
 
     private CharacterController _characterController;
 
-    // ¸ñÇ¥: ½ºÆäÀÌ½º ¹Ù¸¦ ´©¸£¸é Ä³¸¯ÅÍ¸¦ Á¡ÇÁÇÏ°í ½Í´Ù. 
-    // ÇÊ¿ä ¼Ó¼º:
-    // - Á¡ÇÁ ÆÄ¿ö °ª
+    // ëª©í‘œ: ìŠ¤í˜ì´ìŠ¤ ë°”ë¥¼ ëˆ„ë¥´ë©´ ìºë¦­í„°ë¥¼ ì í”„í•˜ê³  ì‹¶ë‹¤. 
+    // í•„ìš” ì†ì„±:
+    // - ì í”„ íŒŒì›Œ ê°’
     public float JumpPower = 10f;
 
-    // ±¸Çö ¼ø¼­:
-    // 1. ¸¸¾à¿¡ [Spacebar] ¹öÆ°À» ´©¸£´Â ¼ø°£ && ¶¥ÀÌ¸é...
+    // êµ¬í˜„ ìˆœì„œ:
+    // 1. ë§Œì•½ì— [Spacebar] ë²„íŠ¼ì„ ëˆ„ë¥´ëŠ” ìˆœê°„ && ë•…ì´ë©´...
 
-    // 2. ÇÃ·¹ÀÌ¾î¿¡°Ô yÃà¿¡ ÀÖ¾î Á¡ÇÁ ÆÄ¿ö¸¦ Àû¿ëÇÑ´Ù. 
+    // 2. í”Œë ˆì´ì–´ì—ê²Œ yì¶•ì— ìˆì–´ ì í”„ íŒŒì›Œë¥¼ ì ìš©í•œë‹¤. 
 
 
-    // ¸ñÇ¥: Ä³¸¯ÅÍ¿¡°Ô Áß·ÂÀ» Àû¿ëÇÏ°í ½Í´Ù. 
-    // ÇÊ¿ä¼Ó¼º: 
-    // - Áß·Â °ª
-    private float _gravity = -20f;  // Áß·Â º¯¼ö
-    // - ´©ÀûÇÒ Áß·Â º¯¼ö: yÃà ¼Óµµ
+    // ëª©í‘œ: ìºë¦­í„°ì—ê²Œ ì¤‘ë ¥ì„ ì ìš©í•˜ê³  ì‹¶ë‹¤. 
+    // í•„ìš”ì†ì„±: 
+    // - ì¤‘ë ¥ ê°’
+    private float _gravity = -20f;  // ì¤‘ë ¥ ë³€ìˆ˜
+    // - ëˆ„ì í•  ì¤‘ë ¥ ë³€ìˆ˜: yì¶• ì†ë„
     private float _yVelocity = 0f;
-    // ±¸Çö ¼ø¼­:
-    // 1. Áß·Â °¡¼Óµµ°¡ ´©ÀûµÈ´Ù. 
-    // 2. ÇÃ·¹ÀÌ¾î¿¡°Ô yÃà¿¡ ÀÖ¾î Áß·ÂÀ» Àû¿ëÇÑ´Ù.
+    // êµ¬í˜„ ìˆœì„œ:
+    // 1. ì¤‘ë ¥ ê°€ì†ë„ê°€ ëˆ„ì ëœë‹¤. 
+    // 2. í”Œë ˆì´ì–´ì—ê²Œ yì¶•ì— ìˆì–´ ì¤‘ë ¥ì„ ì ìš©í•œë‹¤.
 
 
-    [Header("º®Å¸±â ±¸Çö")]
-    // ¸ñÇ¥: º®¿¡ ´ê¾Æ ÀÖ´Â »óÅÂ¿¡¼­ ½ºÆäÀÌ½º¹Ù¸¦ ´©¸£¸é º®Å¸±â¸¦ ÇÏ°í ½Í´Ù.
-    // ÇÊ¿ä ¼Ó¼º:
-    // - º®Å¸±â ÆÄ¿ö
+    [Header("ë²½íƒ€ê¸° êµ¬í˜„")]
+    // ëª©í‘œ: ë²½ì— ë‹¿ì•„ ìˆëŠ” ìƒíƒœì—ì„œ ìŠ¤í˜ì´ìŠ¤ë°”ë¥¼ ëˆ„ë¥´ë©´ ë²½íƒ€ê¸°ë¥¼ í•˜ê³  ì‹¶ë‹¤.
+    // í•„ìš” ì†ì„±:
+    // - ë²½íƒ€ê¸° íŒŒì›Œ
     public float ClimbingPower;
-    // º®Å¸±â ½ºÅÂ¹Ì³Ê ¼Ò¸ğ·® ÆÑÅÍ
+    // ë²½íƒ€ê¸° ìŠ¤íƒœë¯¸ë„ˆ ì†Œëª¨ëŸ‰ íŒ©í„°
     public float ClimbingStaminaConsumeFactor = 1.5f;
 
-    // - º®Å¸±â »óÅÂ
+    // - ë²½íƒ€ê¸° ìƒíƒœ
     private bool _isClimbing = false;
-    // ±¸Çö ¼ø¼­
-    // 1. ¸¸¾à¿¡ º®¿¡ ´ê¾Æ ÀÖ´Âµ¥
-    // 2. [Spacebar] ¹öÆ°À» ´©¸£°í ÀÖÀ¸¸é 
-    // 3. º®À» Å¸°Ú´Ù. 
+    // êµ¬í˜„ ìˆœì„œ
+    // 1. ë§Œì•½ì— ë²½ì— ë‹¿ì•„ ìˆëŠ”ë°
+    // 2. [Spacebar] ë²„íŠ¼ì„ ëˆ„ë¥´ê³  ìˆìœ¼ë©´ 
+    // 3. ë²½ì„ íƒ€ê² ë‹¤. 
 
     public int Health;
     public int MaxHealth = 100;
@@ -81,46 +81,46 @@ public class PlayerMove : MonoBehaviour
         Stamina = MaxStamina;
     }
 
-    // ±¸Çö ¼ø¼­
-    // 1. Å° ÀÔ·Â ¹Ş±â
-    // 2. 'Ä³¸¯ÅÍ°¡ ¹Ù¶óº¸´Â ¹æÇâ'À» ±âÁØÀ¸·Î ¹æÇâ±¸ÇÏ±â
-    // 3. ÀÌµ¿ÇÏ±â
+    // êµ¬í˜„ ìˆœì„œ
+    // 1. í‚¤ ì…ë ¥ ë°›ê¸°
+    // 2. 'ìºë¦­í„°ê°€ ë°”ë¼ë³´ëŠ” ë°©í–¥'ì„ ê¸°ì¤€ìœ¼ë¡œ ë°©í–¥êµ¬í•˜ê¸°
+    // 3. ì´ë™í•˜ê¸°
     void Update()
     {
-        // ÇÃ·¹ÀÌ¾î º®Å¸±â 
-        // 1. ¸¸¾à¿¡ º®¿¡ ´ê¾Æ ÀÖ´Âµ¥ && ½ºÅÂ¹Ì³Ê°¡ > 0
+        // í”Œë ˆì´ì–´ ë²½íƒ€ê¸° 
+        // 1. ë§Œì•½ì— ë²½ì— ë‹¿ì•„ ìˆëŠ”ë° && ìŠ¤íƒœë¯¸ë„ˆê°€ > 0
         if (Stamina > 0 && _characterController.collisionFlags == CollisionFlags.Sides)
         {
-            // 2. [Spacebar] ¹öÆ°À» ´©¸£°í ÀÖÀ¸¸é 
+            // 2. [Spacebar] ë²„íŠ¼ì„ ëˆ„ë¥´ê³  ìˆìœ¼ë©´ 
             if (Input.GetKey(KeyCode.Space))
             {
-                // 3. º®À» Å¸°Ú´Ù. 
+                // 3. ë²½ì„ íƒ€ê² ë‹¤. 
                 _isClimbing = true;
                 _yVelocity = ClimbingPower;
             }
         }
 
-        // 1. Å° ÀÔ·Â ¹Ş±â
+        // 1. í‚¤ ì…ë ¥ ë°›ê¸°
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        // 2. 'Ä³¸¯ÅÍ°¡ ¹Ù¶óº¸´Â ¹æÇâ'À» ±âÁØÀ¸·Î ¹æÇâ±¸ÇÏ±â
-        Vector3 dir = new Vector3(h, 0, v);             // ·ÎÄÃ ÁÂÇ¥°è (³ª¸¸ÀÇ µ¿¼­³²ºÏ) 
+        // 2. 'ìºë¦­í„°ê°€ ë°”ë¼ë³´ëŠ” ë°©í–¥'ì„ ê¸°ì¤€ìœ¼ë¡œ ë°©í–¥êµ¬í•˜ê¸°
+        Vector3 dir = new Vector3(h, 0, v);             // ë¡œì»¬ ì¢Œí‘œê³„ (ë‚˜ë§Œì˜ ë™ì„œë‚¨ë¶) 
         dir.Normalize();
         // Transforms direction from local space to world space.
-        dir = Camera.main.transform.TransformDirection(dir); // ±Û·Î¹ú ÁÂÇ¥°è (¼¼»óÀÇ µ¿¼­³²ºÏ)
+        dir = Camera.main.transform.TransformDirection(dir); // ê¸€ë¡œë²Œ ì¢Œí‘œê³„ (ì„¸ìƒì˜ ë™ì„œë‚¨ë¶)
 
 
-        // ½Ç½À °úÁ¦ 1. Shift ´©¸£°í ÀÖÀ¸¸é »¡¸® ¶Ù±â or 
+        // ì‹¤ìŠµ ê³¼ì œ 1. Shift ëˆ„ë¥´ê³  ìˆìœ¼ë©´ ë¹¨ë¦¬ ë›°ê¸° or 
         float speed = MoveSpeed; // 5
-        if (_isClimbing || Input.GetKey(KeyCode.LeftShift)) // ½Ç½À °úÁ¦ 2. ½ºÅÂ¹Ì³Ê ±¸Çö
+        if (_isClimbing || Input.GetKey(KeyCode.LeftShift)) // ì‹¤ìŠµ ê³¼ì œ 2. ìŠ¤íƒœë¯¸ë„ˆ êµ¬í˜„
         {
-            // - Shfit ´©¸¥ µ¿¾È¿¡´Â ½ºÅÂ¹Ì³ª°¡ ¼­¼­È÷ ¼Ò¸ğµÈ´Ù. (3ÃÊ)
-            // »ïÇâ ¿¬»êÀÚ ÀÌ¿ë
+            // - Shfit ëˆ„ë¥¸ ë™ì•ˆì—ëŠ” ìŠ¤íƒœë¯¸ë‚˜ê°€ ì„œì„œíˆ ì†Œëª¨ëœë‹¤. (3ì´ˆ)
+            // ì‚¼í–¥ ì—°ì‚°ì ì´ìš©
             float factor = _isClimbing ? ClimbingStaminaConsumeFactor : 1f;
             Stamina -= StaminaConsumeSpeed * Time.deltaTime * factor;
 
-            // Å¬¶óÀÌ¹Ö »óÅÂ°¡ ¾Æ´Ò ¶§¸¸ ½ºÇÇµå up!
+            // í´ë¼ì´ë° ìƒíƒœê°€ ì•„ë‹ ë•Œë§Œ ìŠ¤í”¼ë“œ up!
             if (!_isClimbing && Stamina > 0)
             {
                 speed = RunSpeed;
@@ -129,8 +129,8 @@ public class PlayerMove : MonoBehaviour
 
         else
         {
-            // - ¾Æ´Ï¸é ½ºÅÂ¹Ì³ª°¡ ¼Ò¸ğ µÇ´Â ¼Óµµº¸´Ù ºü¸¥ ¼Óµµ·Î ÃæÀüµÈ´Ù (2ÃÊ)
-            Stamina += StaminaChargeSpeed * Time.deltaTime; // ÃÊ´ç 50¾¿ ÃæÀü
+            // - ì•„ë‹ˆë©´ ìŠ¤íƒœë¯¸ë‚˜ê°€ ì†Œëª¨ ë˜ëŠ” ì†ë„ë³´ë‹¤ ë¹ ë¥¸ ì†ë„ë¡œ ì¶©ì „ëœë‹¤ (2ì´ˆ)
+            Stamina += StaminaChargeSpeed * Time.deltaTime; // ì´ˆë‹¹ 50ì”© ì¶©ì „
         }
 
         Stamina = Mathf.Clamp(Stamina, 0, 100);
@@ -139,18 +139,18 @@ public class PlayerMove : MonoBehaviour
 
 
 
-        // Á¡ÇÁ ±¸Çö
+        // ì í”„ êµ¬í˜„
         /*
-        // 1. ¸¸¾à¿¡ [Spacebar] ¹öÆ°À» ´©¸£´Â ¼ø°£ && ¶¥ÀÌ¸é...
+        // 1. ë§Œì•½ì— [Spacebar] ë²„íŠ¼ì„ ëˆ„ë¥´ëŠ” ìˆœê°„ && ë•…ì´ë©´...
         if (Input.GetKeyDown(KeyCode.Space) && _characterController.isGrounded)  
         {
-            // 2. ÇÃ·¹ÀÌ¾î¿¡°Ô yÃà¿¡ ÀÖ¾î Á¡ÇÁ ÆÄ¿ö¸¦ Àû¿ëÇÑ´Ù. 
+            // 2. í”Œë ˆì´ì–´ì—ê²Œ yì¶•ì— ìˆì–´ ì í”„ íŒŒì›Œë¥¼ ì ìš©í•œë‹¤. 
             _yVelocity = JumpPower;
         }
         */
-        // Á¡ÇÁ ±¸Çö °úÁ¦: 2´Ü Á¡ÇÁ ±¸Çö
-        // ¶¥ÀÌ¸é Á¡ÇÁ È½¼ö ÃÊ±âÈ­
-        // ¶¥¿¡ ´ê¾ÆÀÖÀ» ¶§
+        // ì í”„ êµ¬í˜„ ê³¼ì œ: 2ë‹¨ ì í”„ êµ¬í˜„
+        // ë•…ì´ë©´ ì í”„ íšŸìˆ˜ ì´ˆê¸°í™”
+        // ë•…ì— ë‹¿ì•„ìˆì„ ë•Œ
         if (_characterController.isGrounded)
         {
             _isJumping = false;
@@ -159,36 +159,36 @@ public class PlayerMove : MonoBehaviour
             JumpRemainCount = JumpMaxCount;
         }
 
-        // 1. ¸¸¾à¿¡ [Spacebar] ¹öÆ°À» ´©¸£´Â ¼ø°£ && (¶¥ÀÌ°Å³ª or Á¡ÇÁ È½¼ö°¡ ³²¾ÆÀÖ´Ù¸é)
+        // 1. ë§Œì•½ì— [Spacebar] ë²„íŠ¼ì„ ëˆ„ë¥´ëŠ” ìˆœê°„ && (ë•…ì´ê±°ë‚˜ or ì í”„ íšŸìˆ˜ê°€ ë‚¨ì•„ìˆë‹¤ë©´)
         if (Input.GetKeyDown(KeyCode.Space) && (_characterController.isGrounded || (_isJumping && JumpRemainCount > 0)))
         {
             _isJumping = true;
             JumpRemainCount--;
 
-            // 2. ÇÃ·¹ÀÌ¾î¿¡°Ô yÃà¿¡ ÀÖ¾î Á¡ÇÁ ÆÄ¿ö¸¦ Àû¿ëÇÑ´Ù.
+            // 2. í”Œë ˆì´ì–´ì—ê²Œ yì¶•ì— ìˆì–´ ì í”„ íŒŒì›Œë¥¼ ì ìš©í•œë‹¤.
             _yVelocity = JumpPower;
         }
 
 
 
 
-        // 3-1. Áß·Â Àû¿ë
-        // 1. Áß·Â °¡¼Óµµ°¡ ´©ÀûµÈ´Ù. 
+        // 3-1. ì¤‘ë ¥ ì ìš©
+        // 1. ì¤‘ë ¥ ê°€ì†ë„ê°€ ëˆ„ì ëœë‹¤. 
         
         _yVelocity += _gravity * Time.deltaTime; 
        
         
-        // 2. ÇÃ·¹ÀÌ¾î¿¡°Ô yÃà¿¡ ÀÖ¾î Áß·ÂÀ» Àû¿ëÇÑ´Ù.
+        // 2. í”Œë ˆì´ì–´ì—ê²Œ yì¶•ì— ìˆì–´ ì¤‘ë ¥ì„ ì ìš©í•œë‹¤.
         dir.y = _yVelocity; 
 
-        // 3-2. ÀÌµ¿ÇÏ±â
+        // 3-2. ì´ë™í•˜ê¸°
         //transform.position += speed * dir * Time.deltaTime;
         _characterController.Move(motion: dir * speed * Time.deltaTime);
 
-        // 9¹ø Å°¸¦ ´©¸£¸é FPS ½ÃÁ¡À¸·Î ÀüÈ¯
+        // 9ë²ˆ í‚¤ë¥¼ ëˆ„ë¥´ë©´ FPS ì‹œì ìœ¼ë¡œ ì „í™˜
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            // FPS Ä«¸Ş¶ó ¸ğµå·Î ÀüÈ¯
+            // FPS ì¹´ë©”ë¼ ëª¨ë“œë¡œ ì „í™˜
             //CameraManager.instance.fpsCamera.enabled = true;
             //CameraManager.instance.tpsCamera.enabled = false;
 
@@ -196,17 +196,17 @@ public class PlayerMove : MonoBehaviour
 
             CameraManager.instance.SetCameraMode(CameraMode.FPS);
         }
-        // 0¹ø Å°¸¦ ´©¸£¸é TPS ½ÃÁ¡À¸·Î ÀüÈ¯
+        // 0ë²ˆ í‚¤ë¥¼ ëˆ„ë¥´ë©´ TPS ì‹œì ìœ¼ë¡œ ì „í™˜
         else if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            // TPS Ä«¸Ş¶ó ¸ğµå·Î ÀüÈ¯ ver1
+            // TPS ì¹´ë©”ë¼ ëª¨ë“œë¡œ ì „í™˜ ver1
             //CameraManager.instance.fpsCamera.enabled = false;
             //CameraManager.instance.tpsCamera.enabled = true;
 
-            // TPS Ä«¸Ş¶ó ¸ğµå·Î ÀüÈ¯ ver2
+            // TPS ì¹´ë©”ë¼ ëª¨ë“œë¡œ ì „í™˜ ver2
             //CameraManager.instance.SetTPSCameramode();
 
-            // TPS Ä«¸Ş¶ó ¸ğµå·Î ÀüÈ¯ ver3
+            // TPS ì¹´ë©”ë¼ ëª¨ë“œë¡œ ì „í™˜ ver3
             CameraManager.instance.SetCameraMode(CameraMode.TPS);
         }
 

@@ -10,10 +10,15 @@ public class Drum : MonoBehaviour, IHitable
     public GameObject ExplosionPaticlePrefab;
     private Rigidbody _rigidbody;
 
-    public float UpPower = 15f;
+    public float UpPower = 7f;
 
     public int Damage = 70;
     public float ExplosionRadius = 10f;
+
+    // 드럼통이 폭발중인가?
+    private bool _isExplosion = false;
+    
+    
 
 
     public void Hit(int damage)
@@ -21,7 +26,7 @@ public class Drum : MonoBehaviour, IHitable
         _hitCount += 1;
         if (_hitCount >= 3)
         {
-            Kill();
+            Explosion();
         }
     }
 
@@ -30,8 +35,15 @@ public class Drum : MonoBehaviour, IHitable
         _rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void Kill()
+    private void Explosion()
     {
+        if (_isExplosion)
+        {
+            return;
+        }
+        _isExplosion = true;
+
+
         GameObject explosion = Instantiate(ExplosionPaticlePrefab);
         explosion.transform.position = this.transform.position;
 
@@ -40,7 +52,7 @@ public class Drum : MonoBehaviour, IHitable
 
         // 실습 과제 22. 드럼통 폭발할 때 주변 Hitable한 Monster와 Player에게 데미지 70
         // 1. 폭발 범위 내 콜라이더 찾기
-        int findLayer = LayerMask.GetMask("Player") | LayerMask.GetMask("Monster");
+        int findLayer = LayerMask.GetMask("Player") | LayerMask.GetMask("Monster") | LayerMask.GetMask("Environment");
         Collider[] colliders = Physics.OverlapSphere(transform.position, ExplosionRadius, findLayer);
 
         // 2. 콜라이더 내에서 Hitable 찾기
@@ -54,6 +66,29 @@ public class Drum : MonoBehaviour, IHitable
             }
         }
 
-        Destroy(gameObject, 3f);
+        // 실습과제 23. 드럼통 폭발할 때 주변 드럼통도 같이 폭발되게 구현 (연쇄폭발)
+        int environmentLayer = LayerMask.GetMask("Environment");
+        Collider[] environmentColliders = Physics.OverlapSphere(transform.position, ExplosionRadius, environmentLayer);
+        foreach (Collider c in environmentColliders)
+        {
+            Drum drum = null;
+            
+            if (c.TryGetComponent<Drum>(out drum))
+            {
+                // 3. 데미지 주기
+                drum.Explosion();
+            }
+        }
+
+        StartCoroutine(Kill_Coroutine());
+
     }
+
+    private IEnumerator Kill_Coroutine()
+    {
+        yield return new WaitForSeconds(3f);
+        Destroy(gameObject, 3f);
+
+    }
+
 }
