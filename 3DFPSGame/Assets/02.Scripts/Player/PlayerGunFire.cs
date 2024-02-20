@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class PlayerGunFire : MonoBehaviour
 {
 
     public Gun CurrentGun;   // 현재 들고있는 총
+    private int _currentGunIndex;  // 현재 들고있는 총의 순서
 
     // 목표: 마우스 왼쪽 버튼을 누르면 시선이 바라보는 방향으로 총을 발사하고 싶다.
     // 필요 속성
@@ -26,12 +26,12 @@ public class PlayerGunFire : MonoBehaviour
     // - 발사 쿨타임
     private float _timer;
 
+    private const int DefaultFOV = 60;
+    private const int ZoomFOV = 20;
+    private bool isZoomMode = false; // 줌 모드냐?
 
     // 총을 담는 인벤토리
     public List<Gun> GunInventory;
-
-
-
 
     // - 쏠 수 있는 총알 개수
 
@@ -41,9 +41,14 @@ public class PlayerGunFire : MonoBehaviour
     private bool _isReloading = false;      // 재장전 중이냐?
     public GameObject ReloadTextObject;     // - 총알 재장전 로딩 텍스트 UI
 
+    // 무기 이미지 UI
+    public Image GunImageUI;
+
 
     private void Start()
     {
+        _currentGunIndex = 0;
+
         // 총알 개수 초기화
         RefreshUI();
         RefreshGun();
@@ -54,15 +59,55 @@ public class PlayerGunFire : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetMouseButtonDown(2))
+        {
+            if (isZoomMode)
+            {
+                isZoomMode = false;
+                Camera.main.fieldOfView = DefaultFOV;
+            }
+            else
+            {
+                isZoomMode = true;
+                Camera.main.fieldOfView = ZoomFOV;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftBracket))
+        {
+            // 뒤로가기
+            _currentGunIndex--;
+            if (_currentGunIndex < 0)
+            {
+                _currentGunIndex = GunInventory.Count - 1;
+            }
+            CurrentGun = GunInventory[_currentGunIndex];
+            RefreshGun();
+            RefreshUI();
+        }
+        else if (Input.GetKeyDown(KeyCode.RightBracket))
+        {
+            // 앞으로 가기
+            _currentGunIndex++;
+            if (_currentGunIndex >= GunInventory.Count)
+            {
+                _currentGunIndex = 0;
+            }
+            CurrentGun = GunInventory[_currentGunIndex];
+            RefreshGun();
+            RefreshUI();
+        }
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            _currentGunIndex = 0;
             CurrentGun = GunInventory[0];
             RefreshGun();
             RefreshUI();
-
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
+            _currentGunIndex = 1;
             CurrentGun = GunInventory[1];
             RefreshGun();
             RefreshUI();
@@ -71,6 +116,7 @@ public class PlayerGunFire : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
+            _currentGunIndex = 2;
             CurrentGun = GunInventory[2];
             RefreshGun();
             RefreshUI();
@@ -143,9 +189,9 @@ public class PlayerGunFire : MonoBehaviour
     }
 
 
-
     private void RefreshUI()
     {
+        GunImageUI.sprite = CurrentGun.ProfileImage;
         BulletNumUI.text = $"{CurrentGun.BulletRemainCount} / {CurrentGun.MaxBulletCount}";
     }
 

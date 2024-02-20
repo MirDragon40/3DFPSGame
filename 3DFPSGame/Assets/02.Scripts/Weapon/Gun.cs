@@ -14,10 +14,8 @@ public class Gun : MonoBehaviour
 {
     public GunType GType;
 
-    [Header("총")]
-    public GameObject Rifle1;
-    public GameObject Sniper2;
-    public GameObject Pistol3;
+    // - 대표 이미지
+    public Sprite ProfileImage;
 
     // 공격력
     public int Damage;
@@ -39,14 +37,6 @@ public class Gun : MonoBehaviour
     {
         // 총알 개수 초기화
         BulletRemainCount = MaxBulletCount;
-
-    }
-
-
-
-    // Update is called once per frame
-    void Update()
-    {
 
     }
 }
