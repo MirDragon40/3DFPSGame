@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Monster : MonoBehaviour, IHitable
 {
     
-    [Range(0,100)]    // À¯´ÏÆ¼ ¿¡µğÅÍ¿¡¼­ Áö¿ø
+    [Range(0,100)]    // ìœ ë‹ˆí‹° ì—ë””í„°ì—ì„œ ì§€ì›
     public int Health;
     public int MaxHealth = 100;
     public Slider HealthSliderUI;

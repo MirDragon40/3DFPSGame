@@ -66,7 +66,7 @@ public class TPSCamera : MonoBehaviour
         transform.RotateAround(point: Target.position, axis: Vector3.up, _mx);
         transform.RotateAround(point: Target.position, axis: transform.right, -_my);
 
-        //transform.position = Target.position - (transform.forward * Offset.magnitude); //+Vector3
+        transform.position = Target.position - (transform.forward * Offset.magnitude) + transform.up * Offset.y; //+Vector3
 
 
 

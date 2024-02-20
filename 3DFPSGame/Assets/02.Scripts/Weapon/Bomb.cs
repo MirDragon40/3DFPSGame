@@ -20,6 +20,8 @@ public class Bomb : MonoBehaviour
     // 실습 과제 8. 수류탄이 폭발할 때(사라질 때) 폭발 이펙트를 자기 위치에 생성하기
     public GameObject BombEffectPrefab;
 
+    private Collider[] _colliders = new Collider[10];
+
 
     // 1. 터질 때
     private void OnCollisionEnter(Collision other)
@@ -35,13 +37,14 @@ public class Bomb : MonoBehaviour
         //    영역의 형태: 스피어, 큐브, 캡슐
 
         int layer = LayerMask.NameToLayer("Monster") /*| LayerMask.NameToLayer("Player")*/;
-        Collider[] colliders = Physics.OverlapSphere(transform.position, ExplosionRadius, layer);   // 비트 합 연산자
+        int count = Physics.OverlapSphereNonAlloc(transform.position, ExplosionRadius,_colliders, layer); // 비트 합 연산자
         //Collider[] colliders = Physics.OverlapSphere(transform.position, ExplosionRadius, 1 << 8 | 1 << 9);
 
         // 3. 찾은 콜라이더 중에서 타격 가능한(IHitable) 오브젝트를 찾아서 Hit() 한다.
-        foreach (Collider collider in colliders)
+        for (int i = 0; i < count; i++)
         {
-            IHitable hitable = collider.gameObject.GetComponent<IHitable>();
+            Collider c = _colliders[i];
+            IHitable hitable = c.gameObject.GetComponent<IHitable>();
             if (hitable != null)
             {
                 hitable.Hit(Damage);
