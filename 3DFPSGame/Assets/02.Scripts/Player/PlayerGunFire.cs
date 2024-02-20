@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class PlayerGunFire : MonoBehaviour
 {
 
-    public int Damage = 1;
+    public Gun CurrentGun;   // 현재 들고있는 총
+
     // 목표: 마우스 왼쪽 버튼을 누르면 시선이 바라보는 방향으로 총을 발사하고 싶다.
     // 필요 속성
     // - 총알 튀는 이펙트 프리펩
@@ -22,19 +24,20 @@ public class PlayerGunFire : MonoBehaviour
 
 
     // - 발사 쿨타임
-    [Header("Gun 타이머")]
-    public float FireCoolTime = 0.2f;
     private float _timer;
 
+
+    // 총을 담는 인벤토리
+    public List<Gun> GunInventory;
+
+
+
+
     // - 쏠 수 있는 총알 개수
-    [Header("총알 개수 제한")]
-    public int BulletRemainCount = 30;
-    public int MaxBulletCount = 30;
 
     // - 총알 개수 텍스트 UI
     public Text BulletNumUI;
     // - 총알이 장전 상태인가?
-    private const float RELOAD_TIME = 1.5f; // 재장전 시간
     private bool _isReloading = false;      // 재장전 중이냐?
     public GameObject ReloadTextObject;     // - 총알 재장전 로딩 텍스트 UI
 
@@ -42,29 +45,53 @@ public class PlayerGunFire : MonoBehaviour
     private void Start()
     {
         // 총알 개수 초기화
-        BulletRemainCount = MaxBulletCount;
         RefreshUI();
+        RefreshGun();
+
+        // 처음 시작할 때 라이플 
+
     }
+
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            CurrentGun = GunInventory[0];
+            RefreshGun();
+            RefreshUI();
+
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            CurrentGun = GunInventory[1];
+            RefreshGun();
+            RefreshUI();
+
+
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            CurrentGun = GunInventory[2];
+            RefreshGun();
+            RefreshUI();
+
+        }
+
         _timer += Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.R) && BulletRemainCount < MaxBulletCount)
+        if (Input.GetKeyDown(KeyCode.R) && CurrentGun.BulletRemainCount < CurrentGun.MaxBulletCount)
         {
             if (!_isReloading)
             {
                 StartCoroutine(Reload_Coroutine());
             }
         }
+
         ReloadTextObject.SetActive(_isReloading);
 
 
-
-
-
-
         // 1. 만약에 마우스 왼쪽 버튼을 누른 상태 && 쿨타임이 다 지난 상태
-        if (Input.GetMouseButton(0) && _timer >= FireCoolTime && BulletRemainCount > 0)  // 마우스 왼쪽 버튼 0
+        if (Input.GetMouseButton(0) && _timer >= CurrentGun.FireCoolTime && CurrentGun.BulletRemainCount > 0)  // 마우스 왼쪽 버튼 0
         {
             // 재장전 취소
             if (_isReloading)
@@ -73,7 +100,7 @@ public class PlayerGunFire : MonoBehaviour
                 _isReloading = false;
             }
 
-            BulletRemainCount--;
+            CurrentGun.BulletRemainCount--;
             RefreshUI();
             _timer = 0;
 
@@ -90,7 +117,7 @@ public class PlayerGunFire : MonoBehaviour
                 IHitable hitObject = hitInfo.collider.GetComponent<IHitable>();
                 if (hitObject != null)   // 때릴 수 있는 친구인가요?
                 {
-                    hitObject.Hit(Damage);
+                    hitObject.Hit(CurrentGun.Damage);
                 }
 
                 /*
@@ -110,13 +137,16 @@ public class PlayerGunFire : MonoBehaviour
             }
         }
 
+        
+
+
     }
 
 
 
     private void RefreshUI()
     {
-        BulletNumUI.text = $"{BulletRemainCount} / {MaxBulletCount}";
+        BulletNumUI.text = $"{CurrentGun.BulletRemainCount} / {CurrentGun.MaxBulletCount}";
     }
 
 
@@ -125,12 +155,19 @@ public class PlayerGunFire : MonoBehaviour
         _isReloading = true;
 
         // R키 누르면 1.5초 후 재장전, (중간에 총 쏘는 행위를 하면 재장전 취소)
-        yield return new WaitForSeconds(RELOAD_TIME);
-        BulletRemainCount = MaxBulletCount;
+        yield return new WaitForSeconds(CurrentGun.RELOAD_TIME);
+        CurrentGun.BulletRemainCount = CurrentGun.MaxBulletCount;
         RefreshUI();
 
         _isReloading = false;
     }
 
-
+    private void RefreshGun()
+    {
+        foreach(Gun gun in GunInventory)
+        {
+            
+            gun.gameObject.SetActive(gun == CurrentGun);
+        }
+    }
 }
