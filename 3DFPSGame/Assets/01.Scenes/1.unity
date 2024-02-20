@@ -2122,6 +2122,7 @@ RectTransform:
   - {fileID: 548708744}
   - {fileID: 216343781}
   - {fileID: 922869722}
+  - {fileID: 1138591493}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3518,6 +3519,81 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 54dd9cb5740188a488b8baebbf19207c, type: 3}
+--- !u!1 &1138591492
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1138591493}
+  - component: {fileID: 1138591495}
+  - component: {fileID: 1138591494}
+  m_Layer: 5
+  m_Name: Zoom Sight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1138591493
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1138591492}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 597596973}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.0050201, y: -0.0000076294}
+  m_SizeDelta: {x: 1920, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1138591494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1138591492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 43791196676056b47b8ddccd9c7c28e6, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1138591495
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1138591492}
+  m_CullTransparentMesh: 1
 --- !u!1 &1161774696
 GameObject:
   m_ObjectHideFlags: 0
@@ -3658,9 +3734,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GType: 2
   ProfileImage: {fileID: 21300000, guid: 063cee7014f68b3438bc59feff93f195, type: 3}
-  Rifle1: {fileID: 0}
-  Sniper2: {fileID: 0}
-  Pistol3: {fileID: 0}
   Damage: 30
   FireCoolTime: 0.5
   BulletRemainCount: 7
@@ -4086,9 +4159,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GType: 2
   ProfileImage: {fileID: 0}
-  Rifle1: {fileID: 0}
-  Sniper2: {fileID: 0}
-  Pistol3: {fileID: 0}
   Damage: 30
   FireCoolTime: 0.5
   BulletRemainCount: 0
@@ -4318,10 +4388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GType: 1
-  ProfileImage: {fileID: 21300000, guid: 063cee7014f68b3438bc59feff93f195, type: 3}
-  Rifle1: {fileID: 0}
-  Sniper2: {fileID: 0}
-  Pistol3: {fileID: 0}
+  ProfileImage: {fileID: 21300000, guid: 56891dfdc543b8a418700a23f8afed66, type: 3}
   Damage: 90
   FireCoolTime: 1
   BulletRemainCount: 10
@@ -4983,7 +5050,8 @@ MonoBehaviour:
   - {fileID: 1260838557}
   BulletNumUI: {fileID: 841084805}
   ReloadTextObject: {fileID: 548708743}
-  GunImageUI: {fileID: 0}
+  GunImageUI: {fileID: 922869723}
+  ZoomImageUI: {fileID: 1138591494}
 --- !u!114 &2061555863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5306,9 +5374,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GType: 0
   ProfileImage: {fileID: 21300000, guid: 00c96e0eaad4543408f26265e0be22fa, type: 3}
-  Rifle1: {fileID: 0}
-  Sniper2: {fileID: 0}
-  Pistol3: {fileID: 0}
   Damage: 10
   FireCoolTime: 0.2
   BulletRemainCount: 30

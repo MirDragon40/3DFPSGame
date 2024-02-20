@@ -28,7 +28,10 @@ public class PlayerGunFire : MonoBehaviour
 
     private const int DefaultFOV = 60;
     private const int ZoomFOV = 20;
-    private bool isZoomMode = false; // 줌 모드냐?
+    private bool _isZoomMode = false; // 줌 모드냐?
+
+    public GameObject CrosshairUI;
+    public GameObject CrosshairZoomUI;
 
     // 총을 담는 인벤토리
     public List<Gun> GunInventory;
@@ -44,6 +47,9 @@ public class PlayerGunFire : MonoBehaviour
     // 무기 이미지 UI
     public Image GunImageUI;
 
+    // 줌 이미지
+    public Image ZoomImageUI;
+
 
     private void Start()
     {
@@ -54,21 +60,21 @@ public class PlayerGunFire : MonoBehaviour
         RefreshGun();
 
         // 처음 시작할 때 라이플 
-
+        ZoomImageUI.enabled = false;
     }
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(2))
         {
-            if (isZoomMode)
+            if (_isZoomMode)
             {
-                isZoomMode = false;
+                _isZoomMode = false;
                 Camera.main.fieldOfView = DefaultFOV;
             }
             else
             {
-                isZoomMode = true;
+                _isZoomMode = true;
                 Camera.main.fieldOfView = ZoomFOV;
             }
         }
@@ -80,6 +86,15 @@ public class PlayerGunFire : MonoBehaviour
             if (_currentGunIndex < 0)
             {
                 _currentGunIndex = GunInventory.Count - 1;
+            }
+            else if (_currentGunIndex == 1)
+            {
+                ZoomImageUI.enabled = true;
+            }
+            else
+            {
+                ZoomImageUI.enabled = false;
+
             }
             CurrentGun = GunInventory[_currentGunIndex];
             RefreshGun();
@@ -93,6 +108,15 @@ public class PlayerGunFire : MonoBehaviour
             {
                 _currentGunIndex = 0;
             }
+            else if (_currentGunIndex == 1)
+            {
+                ZoomImageUI.enabled = true;
+            }
+            else
+            {
+                ZoomImageUI.enabled = false;
+            }
+
             CurrentGun = GunInventory[_currentGunIndex];
             RefreshGun();
             RefreshUI();
@@ -104,6 +128,8 @@ public class PlayerGunFire : MonoBehaviour
             CurrentGun = GunInventory[0];
             RefreshGun();
             RefreshUI();
+            ZoomImageUI.enabled = false;
+
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
@@ -111,6 +137,7 @@ public class PlayerGunFire : MonoBehaviour
             CurrentGun = GunInventory[1];
             RefreshGun();
             RefreshUI();
+            ZoomImageUI.enabled = true;
 
 
         }
@@ -120,6 +147,7 @@ public class PlayerGunFire : MonoBehaviour
             CurrentGun = GunInventory[2];
             RefreshGun();
             RefreshUI();
+            ZoomImageUI.enabled = false;
 
         }
 
@@ -183,8 +211,6 @@ public class PlayerGunFire : MonoBehaviour
             }
         }
 
-        
-
 
     }
 
@@ -192,7 +218,10 @@ public class PlayerGunFire : MonoBehaviour
     private void RefreshUI()
     {
         GunImageUI.sprite = CurrentGun.ProfileImage;
-        BulletNumUI.text = $"{CurrentGun.BulletRemainCount} / {CurrentGun.MaxBulletCount}";
+        BulletNumUI.text = $"{CurrentGun.BulletRemainCount:d2} / {CurrentGun.MaxBulletCount}";
+
+        CrosshairUI.SetActive(!_isZoomMode);
+        CrosshairZoomUI.SetActive(_isZoomMode);
     }
 
 
@@ -210,9 +239,16 @@ public class PlayerGunFire : MonoBehaviour
 
     private void RefreshGun()
     {
-        foreach(Gun gun in GunInventory)
+        foreach (Gun gun in GunInventory)
         {
-            
+            /**if (gun == CurrentGun)
+            {
+                gun.gameObject.SetActive(true);
+            }
+            else
+            {
+                gun.gameObject.SetActive(false);
+            }**/
             gun.gameObject.SetActive(gun == CurrentGun);
         }
     }
