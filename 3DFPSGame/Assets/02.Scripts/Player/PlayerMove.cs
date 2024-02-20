@@ -194,7 +194,7 @@ public class PlayerMove : MonoBehaviour
 
             //CameraManager.instance.SetFPSCameraMode();
 
-            CameraManager.instance.SetCameraMode(CameraMode.FPS);
+            CameraManager.Instance.SetCameraMode(CameraMode.FPS);
         }
         // 0번 키를 누르면 TPS 시점으로 전환
         else if (Input.GetKeyDown(KeyCode.Alpha0))
@@ -207,7 +207,7 @@ public class PlayerMove : MonoBehaviour
             //CameraManager.instance.SetTPSCameramode();
 
             // TPS 카메라 모드로 전환 ver3
-            CameraManager.instance.SetCameraMode(CameraMode.TPS);
+            CameraManager.Instance.SetCameraMode(CameraMode.TPS);
         }
 
     }

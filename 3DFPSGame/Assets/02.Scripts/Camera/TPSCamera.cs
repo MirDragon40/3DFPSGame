@@ -2,34 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 3ÀÎÄª ½´ÆÃ (Third Person Shooter) 
-// °ÔÀÓ»óÀÇ Ä³¸¯ÅÍ°¡ º¸´Â ½ÃÁ¡ÀÌ ¾Æ´Ñ, Ä³¸¯ÅÍ¸¦ º¸´Â ½ÃÁ¡ Áï, 3ÀÎÄª °üÂûÀÚ ½ÃÁ¡ÀÇ Ä«¸Ş¶ó
+// 3ì¸ì¹­ ìŠˆíŒ… (Third Person Shooter) 
+// ê²Œì„ìƒì˜ ìºë¦­í„°ê°€ ë³´ëŠ” ì‹œì ì´ ì•„ë‹Œ, ìºë¦­í„°ë¥¼ ë³´ëŠ” ì‹œì  ì¦‰, 3ì¸ì¹­ ê´€ì°°ì ì‹œì ì˜ ì¹´ë©”ë¼
 
 
 public class TPSCamera : MonoBehaviour
 {
 
-    // ** Ä«¸Ş¶ó È¸Àü **
-    // ¸ñÇ¥: ¸¶¿ì½º¸¦ Á¶ÀÛÇÏ¸é Ä«¸Ş¶ó¸¦ Ä³¸¯ÅÍ Áß½É¿¡ ´Ù¶ó ±× ¹æÇâÀ¸·Î È¸Àü½ÃÅ°°í ½Í´Ù. 
+    // ** ì¹´ë©”ë¼ íšŒì „ **
+    // ëª©í‘œ: ë§ˆìš°ìŠ¤ë¥¼ ì¡°ì‘í•˜ë©´ ì¹´ë©”ë¼ë¥¼ ìºë¦­í„° ì¤‘ì‹¬ì— ë‹¤ë¼ ê·¸ ë°©í–¥ìœ¼ë¡œ íšŒì „ì‹œí‚¤ê³  ì‹¶ë‹¤. 
 
-    // ÇÊ¿ä ¼Ó¼º:
-    // - È¸Àü ¼Óµµ
+    // í•„ìš” ì†ì„±:
+    // - íšŒì „ ì†ë„
     public float RotationSpeed = 200;
-    // - Å¸°Ù(Ä³¸¯ÅÍ)
+    // - íƒ€ê²Ÿ(ìºë¦­í„°)
     public Transform Target;
-    public Vector3 Offset = new Vector3(x: 0, y: 3f, z: -3f);  // ¿ÀÇÁ¼Â ´õÇØÁÖ±â
-    // ´©ÀûÇÒ x °¢µµ¿Í y °¢µµ
+    public Vector3 Offset = new Vector3(x: 0, y: 3f, z: -3f);  // ì˜¤í”„ì…‹ ë”í•´ì£¼ê¸°
+    // ëˆ„ì í•  x ê°ë„ì™€ y ê°ë„
     private float _mx = 0;
     private float _my = 0;
 
 
 
-    // ±¸Çö ¼ø¼­:
-    // 1. Ä«¸Ş¶ó¸¦ Å¸°Ù(ÇÃ·¹ÀÌ¾î¿¡¼­ Á¶±İ ´õ ¶³¾îÁø °Å¸®)À¸·Î ÀÌµ¿½ÃÅ²´Ù. (µû¶ó´Ù´Ï°Ô ÇÑ´Ù.)
-    // 2. ÇÃ·¹ÀÌ¾î¸¦ ÃÄ´Ùº¸°Ô ÇÑ´Ù. 
-    // 3. ¸¶¿ì½º ÀÔ·ÂÀ» ¹Ş´Â´Ù. 
-    // 4. ¸¶¿ì½º ÀÔ·Â¿¡ µû¶ó È¸Àü ¹æÇâÀ» ±¸ÇÑ´Ù.
-    // 5. Å¸°Ù Áß½ÉÀ¸·Î È¸Àü ¹æÇâ¿¡ ¸Â°Ô È¸ÀüÇÑ´Ù.
+    // êµ¬í˜„ ìˆœì„œ:
+    // 1. ì¹´ë©”ë¼ë¥¼ íƒ€ê²Ÿ(í”Œë ˆì´ì–´ì—ì„œ ì¡°ê¸ˆ ë” ë–¨ì–´ì§„ ê±°ë¦¬)ìœ¼ë¡œ ì´ë™ì‹œí‚¨ë‹¤. (ë”°ë¼ë‹¤ë‹ˆê²Œ í•œë‹¤.)
+    // 2. í”Œë ˆì´ì–´ë¥¼ ì³ë‹¤ë³´ê²Œ í•œë‹¤. 
+    // 3. ë§ˆìš°ìŠ¤ ì…ë ¥ì„ ë°›ëŠ”ë‹¤. 
+    // 4. ë§ˆìš°ìŠ¤ ì…ë ¥ì— ë”°ë¼ íšŒì „ ë°©í–¥ì„ êµ¬í•œë‹¤.
+    // 5. íƒ€ê²Ÿ ì¤‘ì‹¬ìœ¼ë¡œ íšŒì „ ë°©í–¥ì— ë§ê²Œ íšŒì „í•œë‹¤.
 
 
     void Start()
@@ -39,30 +39,30 @@ public class TPSCamera : MonoBehaviour
 
     private void LateUpdate()
     {
-        // ±¸Çö ¼ø¼­:
-        // 1. Ä«¸Ş¶ó¸¦ Å¸°Ù(ÇÃ·¹ÀÌ¾î¿¡¼­ Á¶±İ ´õ ¶³¾îÁø °Å¸®)À¸·Î ÀÌµ¿½ÃÅ²´Ù. (µû¶ó´Ù´Ï°Ô ÇÑ´Ù.)
-        if (CameraManager.instance.Mode == CameraMode.TPS)
+        // êµ¬í˜„ ìˆœì„œ:
+        // 1. ì¹´ë©”ë¼ë¥¼ íƒ€ê²Ÿ(í”Œë ˆì´ì–´ì—ì„œ ì¡°ê¸ˆ ë” ë–¨ì–´ì§„ ê±°ë¦¬)ìœ¼ë¡œ ì´ë™ì‹œí‚¨ë‹¤. (ë”°ë¼ë‹¤ë‹ˆê²Œ í•œë‹¤.)
+        if (CameraManager.Instance.Mode == CameraMode.TPS)
         {
             transform.position = Target.position + Offset;
         }
 
-        // 2. ÇÃ·¹ÀÌ¾î¸¦ ÃÄ´Ùº¸°Ô ÇÑ´Ù. 
+        // 2. í”Œë ˆì´ì–´ë¥¼ ì³ë‹¤ë³´ê²Œ í•œë‹¤. 
         // Rotates the transform so the forward vector points at target's current position.
-        if (CameraManager.instance.Mode == CameraMode.TPS)
+        if (CameraManager.Instance.Mode == CameraMode.TPS)
         {
             transform.LookAt(Target);
 
         }
 
-        // 3. ¸¶¿ì½º ÀÔ·ÂÀ» ¹Ş´Â´Ù. 
+        // 3. ë§ˆìš°ìŠ¤ ì…ë ¥ì„ ë°›ëŠ”ë‹¤. 
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
 
-        // 4. ¸¶¿ì½º ÀÔ·Â¿¡ µû¶ó È¸Àü ¹æÇâÀ» ±¸ÇÑ´Ù.
+        // 4. ë§ˆìš°ìŠ¤ ì…ë ¥ì— ë”°ë¼ íšŒì „ ë°©í–¥ì„ êµ¬í•œë‹¤.
         _mx += mouseX * RotationSpeed * Time.deltaTime;
         _my += mouseY * RotationSpeed * Time.deltaTime;
 
-        // 5. Å¸°Ù Áß½ÉÀ¸·Î È¸Àü ¹æÇâ¿¡ ¸Â°Ô È¸ÀüÇÑ´Ù. 
+        // 5. íƒ€ê²Ÿ ì¤‘ì‹¬ìœ¼ë¡œ íšŒì „ ë°©í–¥ì— ë§ê²Œ íšŒì „í•œë‹¤. 
         transform.RotateAround(point: Target.position, axis: Vector3.up, _mx);
         transform.RotateAround(point: Target.position, axis: transform.right, -_my);
 

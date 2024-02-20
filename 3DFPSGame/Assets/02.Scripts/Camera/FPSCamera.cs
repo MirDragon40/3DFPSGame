@@ -75,7 +75,7 @@ public class FPSCamera : MonoBehaviour
         _my = Mathf.Clamp(value: _my, min: -90f, max: 90f);
 
 
-        if (CameraManager.instance.Mode == CameraMode.FPS)
+        if (CameraManager.Instance.Mode == CameraMode.FPS)
         {
             transform.eulerAngles = new Vector3(x: -_my, y: _mx, z: 0);
         }

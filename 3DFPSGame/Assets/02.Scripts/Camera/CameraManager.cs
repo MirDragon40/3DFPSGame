@@ -1,71 +1,143 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 
 public enum CameraMode
 {
+    Start,
     FPS,
     TPS,
+    Top,
+    Back,
 }
+
+// 역할: 카메라를 관리하는 관리자
 public class CameraManager : MonoBehaviour
 {
-    public static CameraManager instance { get; private set;}
+    public static CameraManager Instance { get; private set; }
 
-    public FPSCamera fpsCamera;
-    public TPSCamera tpsCamera;
-
-    public CameraMode Mode = CameraMode.FPS;
-
-    public float RotationSpeed = 200;  // 초당 200초까지 회전 가능한 속도
-    // 누적할 x각도와 y 각도
-    public float _mx = 0;
-    public float _my = 0;
-
-    void Start()
+    public static bool Focus
     {
-        //fpsCamera = this.gameObject.GetComponent<FPSCamera>();
-        //tpsCamera = this.gameObject.GetComponent<TPSCamera>();
-        fpsCamera = GetComponent<FPSCamera>();
-        tpsCamera = GetComponent<TPSCamera>();
+        get
+        {
+            if (Cursor.lockState != CursorLockMode.Locked)
+            {
+                return false;
+            }
 
-        SetFPSCameraMode();
+            Vector3 mousePosition = Input.mousePosition;
+            bool isScreen = mousePosition.x < 0 ||
+                            mousePosition.x > Screen.width ||
+                            mousePosition.y < 0 ||
+                            mousePosition.y > Screen.height;
+            return !isScreen;
+        }
+    }
+
+    private FPSCamera _FPSCamera;
+    private TPSCamera _TPSCamera;
+
+    public float RotationSpeed = 400;
+
+    public float X { get; private set; }
+    public float Y { get; private set; }
+
+    public Vector2 XY => new Vector2(X, Y);
+
+    public CameraMode Mode = CameraMode.Start;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+
+        _FPSCamera = GetComponent<FPSCamera>();
+        _TPSCamera = GetComponent<TPSCamera>();
+    }
+
+    private void Start()
+    {
+        // 마우스 커서 없애고, 고정
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
+        SetCameraMode(CameraMode.TPS);
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (Cursor.lockState == CursorLockMode.None)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (Cursor.lockState == CursorLockMode.Locked)
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Minus))
+        {
+            X = 0;
+            Y = 0;
+
+            FindObjectOfType<PlayerRotate>().ResetX();
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (!Focus)
+        {
+            return;
+        }
+
+        // 3. 마우스 입력을 받는다.
+        float mouseX = Input.GetAxis("Mouse X");
+        float mouseY = Input.GetAxis("Mouse Y");
+
+        // 4. 마우스 입력에 따라 회전 방향을 누적한다.
+        X += mouseX * RotationSpeed * Time.deltaTime;
+        Y += mouseY * RotationSpeed * Time.deltaTime;
+
+        Y = Mathf.Clamp(Y, -90, 90);
     }
 
     public void SetCameraMode(CameraMode mode)
     {
-        //fpsCamera.enabled = (mode == CameraMode.FPS);
-        //tpsCamera.enabled = (mode == CameraMode.TPS);
+
+        if (Mode == CameraMode.FPS)
+        {
+            //Y += _TPSCamera.Offset.y;
+        }
+
+        Vector3 currentRotation = transform.eulerAngles;
+
         Mode = mode;
-    }
+
+        //X = Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg;
+        //Y = Mathf.Atan2(forward.y, Mathf.Sqrt(forward.x * forward.x + forward.z * forward.z)) * Mathf.Rad2Deg;
 
 
-    private void Awake()
-    {
-
-        // 싱글톤 패턴 : 오직 한개의 클래스 인스턴스를 갖도록 보장
-        if (instance == null)
-        {
-            instance = this;
-        }
-
-        else
-        {
-            Destroy(gameObject);
-        }
-        DontDestroyOnLoad(this.gameObject);
-    }
-
-    public void SetFPSCameraMode()
-    {
-        fpsCamera.enabled = true;
-        tpsCamera.enabled = false;
-    }
-    public void SetTPSCameramode()
-    {
-        fpsCamera.enabled = false;
-        tpsCamera.enabled = true;
-
+        _FPSCamera.enabled = (mode == CameraMode.FPS);
+        _TPSCamera.enabled = (mode == CameraMode.TPS);
     }
 }
