@@ -14,6 +14,12 @@ public class Item : MonoBehaviour
     public ItemType ItemType;
     public int Count;
 
+    public Item(ItemType itemType, int count)
+    {
+        ItemType = itemType;
+        Count = count;
+    }
+
     public bool TryUse()
     {
         if (Count == 0)

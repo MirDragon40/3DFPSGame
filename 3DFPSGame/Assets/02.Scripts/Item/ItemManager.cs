@@ -26,18 +26,49 @@ public class ItemManager : MonoBehaviour
 
     private void Start()
     {
-        ItemList.Add(new Item());
-        ItemList.Add(new Item());
-        ItemList.Add(new Item());
+        ItemList.Add(new Item(ItemType.Health, 1));   // 0: Health
+        ItemList.Add(new Item(ItemType.Stamina, 1));   // 1: Stamina
+        ItemList.Add(new Item(ItemType.Bullet, 1));   // 2: Bullet
 
-        ItemList[0].ItemType = ItemType.Health;
-        ItemList[0].Count = 1;
-
-        ItemList[1].ItemType = ItemType.Stamina;
-        ItemList[1].Count = 1;
-
-        ItemList[2].ItemType = ItemType.Bullet;
-        ItemList[2].Count = 1;
     }
 
+    // 1. 아이템 추가(생성)
+    public void AddItem(ItemType itemType)
+    {
+        for (int i = 0; i < ItemList.Count; i++)
+        {
+            if (ItemList[i].ItemType == itemType)
+            {
+                ItemList[i].Count++;
+                break;
+            }
+        }
+    }
+
+    // 2. 아이템 조회
+    public int GetItemcount(ItemType itemType)
+    {
+        for (int i = 0; i < ItemList.Count; i++)
+        {
+            if (ItemList[i].ItemType == itemType)
+            {
+                return ItemList[i].Count;
+            }
+        }
+
+        return 0;
+    }
+
+    // 3. 아이템 사용
+    public bool TryUseItem(ItemType itemType)
+    {
+        for (int i = 0; i < ItemList.Count; i++)
+        {
+            if (ItemList[i].ItemType == itemType)
+            {
+                return ItemList[i].TryUse();
+            }
+        }
+        return false;
+    }
 }
