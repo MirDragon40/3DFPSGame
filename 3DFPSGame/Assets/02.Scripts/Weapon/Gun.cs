@@ -37,7 +37,6 @@ public class Gun : MonoBehaviour
     {
         // 총알 개수 초기화
         BulletRemainCount = MaxBulletCount;
-
     }
 }
 

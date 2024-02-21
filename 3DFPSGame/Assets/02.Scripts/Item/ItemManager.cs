@@ -8,13 +8,11 @@ using UnityEngine.UI;
 
 public class ItemManager : MonoBehaviour
 {
-    public ItemManager Instance { get; private set; }
+    public static ItemManager Instance { get; private set; }
 
     public Text HealthItemCountTextUI;
     public Text StaminaItemCountTextUI;
     public Text BulletItemCountTextUI;
-
-
 
 
     private void Awake()
@@ -34,12 +32,11 @@ public class ItemManager : MonoBehaviour
 
     private void Start()
     {
-        ItemList.Add(new Item(ItemType.Health, 1));   // 0: Health
-        ItemList.Add(new Item(ItemType.Stamina, 1));   // 1: Stamina
-        ItemList.Add(new Item(ItemType.Bullet, 1));   // 2: Bullet
+        ItemList.Add(new Item(ItemType.Health, 3));   // 0: Health
+        ItemList.Add(new Item(ItemType.Stamina, 5));   // 1: Stamina
+        ItemList.Add(new Item(ItemType.Bullet, 7));   // 2: Bullet
 
         RefreshUI();
-
 
     }
 

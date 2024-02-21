@@ -30,7 +30,6 @@ public class PlayerGunFireAbility : MonoBehaviour
 
     private const float DefaultFOV = 60;
     private const float ZoomFOV = 20;
-    public float duration = 1.5f;
 
     private const float ZoomInDuration = 0.3f;
     private const float ZoomOutDuration = 0.2f;
@@ -149,7 +148,6 @@ public class PlayerGunFireAbility : MonoBehaviour
             RefreshZoomMode();
             RefreshGun();
             RefreshUI();
-
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {

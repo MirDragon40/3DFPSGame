@@ -33,16 +33,22 @@ public class Item    // 게임 관련된 요소들이 들어가 있는 Monobehav
             case ItemType.Health:
             {
                 // Todo: 플레이어 체력 꽉차기
+                PlayerMoveAbility playerMoveAbility = GameObject.FindWithTag("Player").GetComponent<PlayerMoveAbility>();
+                playerMoveAbility.Health = playerMoveAbility.MaxHealth;
                 break;
             }
             case ItemType.Stamina:
             {
                 // Todo: 플레이어 스테미너 꽉차기
+                PlayerMoveAbility playerMoveAbility = GameObject.FindWithTag("Player").GetComponent<PlayerMoveAbility>();
+                playerMoveAbility.Stamina = playerMoveAbility.MaxStamina;
                 break;
             }
             case ItemType.Bullet:
             {
                 // Todo: 플레이어가 현재 들고있는 총의 총알이 꽉찬다.
+                PlayerGunFireAbility pgfa = GameObject.FindWithTag("Player").GetComponent<PlayerGunFireAbility>();
+                pgfa.CurrentGun.BulletRemainCount = pgfa.CurrentGun.MaxBulletCount;
                 break;
             }
         }
