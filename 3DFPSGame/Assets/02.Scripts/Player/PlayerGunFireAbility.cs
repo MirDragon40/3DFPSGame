@@ -170,7 +170,6 @@ public class PlayerGunFireAbility : MonoBehaviour
             RefreshUI();
         }
 
-        _timer += Time.deltaTime;
 
         if (Input.GetKeyDown(KeyCode.R) && CurrentGun.BulletRemainCount < CurrentGun.MaxBulletCount)
         {
@@ -181,6 +180,7 @@ public class PlayerGunFireAbility : MonoBehaviour
         }
 
         ReloadTextObject.SetActive(_isReloading);
+        _timer += Time.deltaTime;
 
 
         // 1. 만약에 마우스 왼쪽 버튼을 누른 상태 && 쿨타임이 다 지난 상태
@@ -195,6 +195,7 @@ public class PlayerGunFireAbility : MonoBehaviour
 
             CurrentGun.BulletRemainCount--;
             RefreshUI();
+
             _timer = 0;
 
             // 2. 레이(광선)을 생성하고, 위치와 방향을 설정한다.

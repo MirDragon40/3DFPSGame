@@ -28,8 +28,25 @@ public class Monster : MonoBehaviour, IHitable
         Health -= damage;
         if (Health <= 0)
         {
-            Destroy(gameObject);
+            Die();
         }
+    }
+
+    private void Die()
+    {
+        /*
+        if (Random.Range(0,2) == 1)
+        {
+            // 아이템 주문
+            ItemObjectFactory.Instance.Make(ItemType.Health, transform.position);   
+        }
+        */
+
+        // 죽을 때 아이템 생성
+        ItemObjectFactory.Instance.MakePercent(transform.position);
+
+        Destroy(gameObject);
+
     }
 
 }

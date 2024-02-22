@@ -41,7 +41,7 @@ public class Item    // 게임 관련된 요소들이 들어가 있는 Monobehav
             {
                 // Todo: 플레이어 스테미너 꽉차기
                 PlayerMoveAbility playerMoveAbility = GameObject.FindWithTag("Player").GetComponent<PlayerMoveAbility>();
-                playerMoveAbility.Stamina = playerMoveAbility.MaxStamina;
+                playerMoveAbility.Stamina = PlayerMoveAbility.MaxStamina;
                 break;
             }
             case ItemType.Bullet:

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 // 역할: 아이템들을 관리해주는 관리자
 // 데이터 관리 -> 데이터(여기에서는 아이템)를 생성, 수정, 삭제, 조회(검색)  // 또는 정렬
+// 이 스크립트에서는 순수하게 데이터 관리만 한다.
 
 public class ItemManager : MonoBehaviour
 {
@@ -74,7 +75,9 @@ public class ItemManager : MonoBehaviour
         {
             if (ItemList[i].ItemType == itemType)
             {
-                return ItemList[i].TryUse();
+               bool result = ItemList[i].TryUse();
+                RefreshUI();
+                return result;
             }
         }
         return false;

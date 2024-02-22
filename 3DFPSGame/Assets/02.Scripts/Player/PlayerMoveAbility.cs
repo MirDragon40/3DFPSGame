@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerMoveAbility : MonoBehaviour
+public class PlayerMoveAbility : MonoBehaviour, IHitable
 {
 
 
@@ -15,30 +15,29 @@ public class PlayerMoveAbility : MonoBehaviour
     public float RunSpeed = 10;    // 뛰는 속도
 
     public float Stamina;             // 스태미나
-    public float MaxStamina = 100;    // 스태미나 최대량
+    public const float MaxStamina = 100;    // 스태미나 최대량
     public float StaminaConsumeSpeed = 33f; // 초당 스태미나 소모량
     public float StaminaChargeSpeed = 50;  // 초당 스태미나 충전량
 
     [Header("스태미나 슬라이더 UI")]
     public Slider StaminaSliderUI;
 
-    [Header("플레이어 점프")]
-    public int JumpMaxCount = 2;
-    public int JumpRemainCount;
-    private bool _isJumping = false;
-
-
     private CharacterController _characterController;
 
+
+    [Header("플레이어 점프")]
     // 목표: 스페이스 바를 누르면 캐릭터를 점프하고 싶다. 
     // 필요 속성:
     // - 점프 파워 값
     public float JumpPower = 10f;
-
+    public int JumpMaxCount = 2;
+    public int JumpRemainCount;
+    private bool _isJumping = false;
     // 구현 순서:
     // 1. 만약에 [Spacebar] 버튼을 누르는 순간 && 땅이면...
-
     // 2. 플레이어에게 y축에 있어 점프 파워를 적용한다. 
+
+
 
 
     // 목표: 캐릭터에게 중력을 적용하고 싶다. 
@@ -57,11 +56,13 @@ public class PlayerMoveAbility : MonoBehaviour
     // 필요 속성:
     // - 벽타기 파워
     public float ClimbingPower;
+
     // 벽타기 스태미너 소모량 팩터
     public float ClimbingStaminaConsumeFactor = 1.5f;
 
     // - 벽타기 상태
     private bool _isClimbing = false;
+
     // 구현 순서
     // 1. 만약에 벽에 닿아 있는데
     // 2. [Spacebar] 버튼을 누르고 있으면 
@@ -79,6 +80,7 @@ public class PlayerMoveAbility : MonoBehaviour
     private void Start()
     {
         Stamina = MaxStamina;
+        Health = MaxHealth;
     }
 
     // 구현 순서
@@ -87,6 +89,8 @@ public class PlayerMoveAbility : MonoBehaviour
     // 3. 이동하기
     void Update()
     {
+        HealthSliderUI.value = (float)Health / (float)MaxHealth;  // 0 ~ 1
+
         // 플레이어 벽타기 
         // 1. 만약에 벽에 닿아 있는데 && 스태미너가 > 0
         if (Stamina > 0 && _characterController.collisionFlags == CollisionFlags.Sides)
@@ -117,6 +121,9 @@ public class PlayerMoveAbility : MonoBehaviour
         {
             // - Shfit 누른 동안에는 스태미나가 서서히 소모된다. (3초)
             // 삼향 연산자 이용
+            // -> 조건식을 사용해서 조건식의 참, 거짓 여부에 따라 다른 결과값을 대입
+            // 조건식 ? 조건식이 참일때의 값 : 조건식이 거짓일때의 값
+
             float factor = _isClimbing ? ClimbingStaminaConsumeFactor : 1f;
             Stamina -= StaminaConsumeSpeed * Time.deltaTime * factor;
 
@@ -173,8 +180,7 @@ public class PlayerMoveAbility : MonoBehaviour
 
 
         // 3-1. 중력 적용
-        // 1. 중력 가속도가 누적된다. 
-        
+        // 1. 중력 가속도가 누적된다.
         _yVelocity += _gravity * Time.deltaTime; 
        
         
@@ -183,7 +189,7 @@ public class PlayerMoveAbility : MonoBehaviour
 
         // 3-2. 이동하기
         //transform.position += speed * dir * Time.deltaTime;
-        _characterController.Move(motion: dir * speed * Time.deltaTime);
+        _characterController.Move( dir * speed * Time.deltaTime);
 
         // 9번 키를 누르면 FPS 시점으로 전환
         if (Input.GetKeyDown(KeyCode.Alpha9))
