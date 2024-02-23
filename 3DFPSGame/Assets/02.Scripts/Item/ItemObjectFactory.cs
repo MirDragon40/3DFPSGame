@@ -101,11 +101,14 @@ public class ItemObjectFactory : MonoBehaviour
     {
 
         ItemObject itemObject = Get(itemType);
+
         if (itemObject != null)
         {
             itemObject.transform.position = position;
+            itemObject.Init();
             itemObject.gameObject.SetActive(true);
         }
+
     }
 
 }

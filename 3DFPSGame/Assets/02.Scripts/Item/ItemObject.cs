@@ -64,7 +64,7 @@ public class ItemObject : MonoBehaviour
             //* 플레이어와 나의 거리를 알고 싶다. 
             //float distance = Vector3.Distance(collider.transform.position, transform.position);
             //Debug.Log(distance); 
-            
+
 
             // 1. 아이템 매니저(인벤토리)에 추가하고,
 
@@ -75,6 +75,12 @@ public class ItemObject : MonoBehaviour
     // 실습과제 31. 몬스터가 죽으면 아이템이 드랍된다. (Health: 20%, Stamina: 20% Bullet: 10%)
 
     // 실습과제 32. 일정 거리가 되면 아이템이 Slerp 이용해서 날라오게 하기 (심심하면 베지어곡선 사용)
+
+
+    public void Init()
+    {
+        
+    }
 
     private void Idle()
     {
@@ -92,29 +98,22 @@ public class ItemObject : MonoBehaviour
 
     private void Trace()
     {
+        /*
         _prograss += Time.deltaTime / TRACE_DURATION;
         transform.position = Vector3.Slerp(_startPosition, _player.position, _prograss);
         // Slerp 사용.(시작점, 종료점, 진행도  -> 변수 필요)
         // 진행도를 누적할 시간
-
-        if (_prograss >= 1)
-        {
-            // 1. 아이템 매니저
-            ItemManager.Instance.AddItem(ItemType);
-
-            // 2. 사라진다.
-            gameObject.SetActive(false);
-        }
-
+        */
         if (_traceCoroutine != null)
         {
             _traceCoroutine = StartCoroutine(Trace_Coroutine());
         }
+
     }
 
     private IEnumerator Trace_Coroutine()
     {
-        while (_prograss < 1)
+        while (_prograss < 0.6)
         {
             _prograss += Time.deltaTime / TRACE_DURATION;
             transform.position = Vector3.Slerp(_startPosition, _player.position, _prograss);
@@ -122,8 +121,16 @@ public class ItemObject : MonoBehaviour
             yield return null;   // 다음 프레임까지 대기
         }
 
+        // 1. 아이템 매니저
+        ItemManager.Instance.AddItem(ItemType);
+
+        // 2. 사라진다.
+        _prograss = 0f;
+        _traceCoroutine = null;
+        gameObject.SetActive(false);
 
     }
+
 
 
 }

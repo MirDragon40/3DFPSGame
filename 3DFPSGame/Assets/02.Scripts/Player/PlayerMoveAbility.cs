@@ -25,6 +25,11 @@ public class PlayerMoveAbility : MonoBehaviour, IHitable
     private CharacterController _characterController;
 
 
+    [Header("플레이어 낙뎀")]
+    private float fallDistance = 0f;
+    public float fallSpeedThreshold = -10f;
+
+
     [Header("플레이어 점프")]
     // 목표: 스페이스 바를 누르면 캐릭터를 점프하고 싶다. 
     // 필요 속성:
@@ -37,7 +42,7 @@ public class PlayerMoveAbility : MonoBehaviour, IHitable
     // 1. 만약에 [Spacebar] 버튼을 누르는 순간 && 땅이면...
     // 2. 플레이어에게 y축에 있어 점프 파워를 적용한다. 
 
-
+   
 
     // 목표: 캐릭터에게 중력을 적용하고 싶다. 
     // 필요속성: 
@@ -71,6 +76,14 @@ public class PlayerMoveAbility : MonoBehaviour, IHitable
     public int MaxHealth = 100;
     public Slider HealthSliderUI;
 
+
+
+    public Image HitEffectImageUI;
+
+
+
+
+
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
@@ -102,6 +115,8 @@ public class PlayerMoveAbility : MonoBehaviour, IHitable
                 _yVelocity = ClimbingPower;
             }
         }
+
+
 
         // 1. 키 입력 받기
         float h = Input.GetAxis("Horizontal");
@@ -163,6 +178,11 @@ public class PlayerMoveAbility : MonoBehaviour, IHitable
             _isClimbing = false;
             _yVelocity = 0f;
             JumpRemainCount = JumpMaxCount;
+
+            if (_yVelocity < -3)
+            {
+                Hit(10 * (int)(_yVelocity / -10f));
+            }
         }
 
         // 1. 만약에 [Spacebar] 버튼을 누르는 순간 && (땅이거나 or 점프 횟수가 남아있다면)
@@ -222,8 +242,14 @@ public class PlayerMoveAbility : MonoBehaviour, IHitable
         Health -= damage;
         if (Health <= 0)
         {
+            HealthSliderUI.value = 0f;
             Destroy(gameObject);
         }
     }
 
+    private IEnumerator HitEffect_Coroutine(float delay)
+    {
+        // 과제 40. 히트이펙트 이미지 0.3초동안 보이게 구현
+        
+    }
 }
