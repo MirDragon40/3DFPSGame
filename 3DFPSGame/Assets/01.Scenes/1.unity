@@ -2054,9 +2054,11 @@ MonoBehaviour:
   HealthSliderUI: {fileID: 28396352}
   FindDistace: 5
   AttackDistance: 2
-  MoveSpeed: 4
+  MoveSpeed: 3
   StartPosition: {x: 0, y: 0, z: 0}
   MoveDistance: 40
+  Damage: 10
+  KnockbackPower: 0.5
 --- !u!143 &454283488
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2775,9 +2777,11 @@ MonoBehaviour:
   HealthSliderUI: {fileID: 1535324302}
   FindDistace: 5
   AttackDistance: 2
-  MoveSpeed: 4
+  MoveSpeed: 3
   StartPosition: {x: 0, y: 0, z: 0}
   MoveDistance: 40
+  Damage: 10
+  KnockbackPower: 0.5
 --- !u!136 &577282394
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4817,9 +4821,11 @@ MonoBehaviour:
   HealthSliderUI: {fileID: 493915705}
   FindDistace: 5
   AttackDistance: 2
-  MoveSpeed: 4
+  MoveSpeed: 3
   StartPosition: {x: 0, y: 0, z: 0}
   MoveDistance: 40
+  Damage: 10
+  KnockbackPower: 0.5
 --- !u!136 &885692275
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8106,9 +8112,11 @@ MonoBehaviour:
   HealthSliderUI: {fileID: 1297936295}
   FindDistace: 5
   AttackDistance: 2
-  MoveSpeed: 4
+  MoveSpeed: 3
   StartPosition: {x: 0, y: 0, z: 0}
   MoveDistance: 40
+  Damage: 10
+  KnockbackPower: 0.5
 --- !u!136 &1827444568
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8667,9 +8675,11 @@ MonoBehaviour:
   HealthSliderUI: {fileID: 1090401945}
   FindDistace: 5
   AttackDistance: 2
-  MoveSpeed: 4
+  MoveSpeed: 3
   StartPosition: {x: 0, y: 0, z: 0}
   MoveDistance: 40
+  Damage: 10
+  KnockbackPower: 0.5
 --- !u!136 &1915124856
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -9340,9 +9350,11 @@ MonoBehaviour:
   HealthSliderUI: {fileID: 633769253}
   FindDistace: 5
   AttackDistance: 2
-  MoveSpeed: 4
+  MoveSpeed: 3
   StartPosition: {x: 0, y: 0, z: 0}
   MoveDistance: 40
+  Damage: 10
+  KnockbackPower: 0.5
 --- !u!136 &2066295163
 CapsuleCollider:
   m_ObjectHideFlags: 0

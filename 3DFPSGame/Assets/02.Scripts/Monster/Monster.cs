@@ -20,6 +20,9 @@ public class Monster : MonoBehaviour, IHitable
     public int MaxHealth = 100;
     public Slider HealthSliderUI;
 
+    /***********************************************************/
+
+
     private CharacterController _characterController;
 
     private Transform _target;  // 플레이어
@@ -35,11 +38,13 @@ public class Monster : MonoBehaviour, IHitable
 
 
 
+
+
     private Vector3 _knockbackStartPosition;
     private Vector3 _knockbackEndPosition;
-    private float KNOCKBACK_DURATION = 0.2f;
+    private float KNOCKBACK_DURATION = 0.1f;
     private float _knockbackPrograss = 0f;
-    public float KnockbackPower = 1f;
+    public float KnockbackPower = 1.2f;
 
     private MonsterState _currentState = MonsterState.Idle;
 
@@ -72,9 +77,14 @@ public class Monster : MonoBehaviour, IHitable
                 Trace();
                 break;
 
+            case MonsterState.ComeBack:
+                ComeBack(); 
+                break;
+
             case MonsterState.Attack:
                 Attack();
                 break;
+
             case MonsterState.Damaged:
                 Damaged();
                 break;
@@ -161,7 +171,7 @@ public class Monster : MonoBehaviour, IHitable
         if (Vector3.Distance(_target.position, transform.position) > AttackDistance)
         {
             _attackTimer = 0f;
-            Debug.Log("상태전환: Attack -> Trace");
+            Debug.Log("상태 전환: Attack -> Trace");
             _currentState = MonsterState.Trace;
             return;
         }

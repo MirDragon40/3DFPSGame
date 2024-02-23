@@ -9,6 +9,7 @@ public enum ItemType
     Bullet    // 현재 들고있는 총의 총알이 꽉찬다.
 }
 
+
 public class Item    // 게임 관련된 요소들이 들어가 있는 Monobehaviour
 {
     public ItemType ItemType;
