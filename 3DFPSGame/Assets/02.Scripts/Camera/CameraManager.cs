@@ -18,6 +18,7 @@ public class CameraManager : MonoBehaviour
 {
     public static CameraManager Instance { get; private set; }
 
+
     public static bool Focus
     {
         get
@@ -35,6 +36,8 @@ public class CameraManager : MonoBehaviour
             return !isScreen;
         }
     }
+
+    public CameraShake CameraShake;
 
     private FPSCamera _FPSCamera;
     private TPSCamera _TPSCamera;

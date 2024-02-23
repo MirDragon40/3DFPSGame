@@ -25,11 +25,6 @@ public class PlayerMoveAbility : MonoBehaviour, IHitable
     private CharacterController _characterController;
 
 
-    [Header("플레이어 낙뎀")]
-    private float fallDistance = 0f;
-    public float fallSpeedThreshold = -10f;
-
-
     [Header("플레이어 점프")]
     // 목표: 스페이스 바를 누르면 캐릭터를 점프하고 싶다. 
     // 필요 속성:
@@ -239,6 +234,9 @@ public class PlayerMoveAbility : MonoBehaviour, IHitable
 
     public void Hit(int damage)
     {
+        StartCoroutine(HitEffect_Coroutine(0.3f));
+        CameraManager.Instance.CameraShake.Shake();
+
         Health -= damage;
         if (Health <= 0)
         {
@@ -250,6 +248,10 @@ public class PlayerMoveAbility : MonoBehaviour, IHitable
     private IEnumerator HitEffect_Coroutine(float delay)
     {
         // 과제 40. 히트이펙트 이미지 0.3초동안 보이게 구현
-        
+        HitEffectImageUI.gameObject.SetActive(true); // 이미지 보여주기
+        yield return new WaitForSeconds(delay); // 0.3초 동안 대기
+        HitEffectImageUI.gameObject.SetActive(false); // 이미지 숨기기
     }
+
+
 }
