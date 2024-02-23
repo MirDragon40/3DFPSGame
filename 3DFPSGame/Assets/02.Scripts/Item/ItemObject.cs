@@ -35,7 +35,6 @@ public class ItemObject : MonoBehaviour
 
     //실습 과제 36. 상태패턴 방식으로 일정 거리가 되면 아이템이 Slerp로 날라오게 하기(대기 상태, 날라오는 상태)
 
-
     // Todo 1. 아이템 프리팹을 3개(Health, Stamina, Bullet) 만든다. (도형이나 색깔 다르게 해서 구별되게)
     // Todo 2. 플레이어와 일정 거리가 되면 아이템이 먹어지고 사라진다. 
 
@@ -88,6 +87,9 @@ public class ItemObject : MonoBehaviour
             _itemState = ItemState.Trace;
         }
     }
+
+    private Coroutine _traceCoroutine;
+
     private void Trace()
     {
         _prograss += Time.deltaTime / TRACE_DURATION;
@@ -103,6 +105,25 @@ public class ItemObject : MonoBehaviour
             // 2. 사라진다.
             gameObject.SetActive(false);
         }
+
+        if (_traceCoroutine != null)
+        {
+            _traceCoroutine = StartCoroutine(Trace_Coroutine());
+        }
     }
+
+    private IEnumerator Trace_Coroutine()
+    {
+        while (_prograss < 1)
+        {
+            _prograss += Time.deltaTime / TRACE_DURATION;
+            transform.position = Vector3.Slerp(_startPosition, _player.position, _prograss);
+
+            yield return null;   // 다음 프레임까지 대기
+        }
+
+
+    }
+
 
 }

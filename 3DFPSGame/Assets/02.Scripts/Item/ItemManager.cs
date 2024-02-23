@@ -52,6 +52,8 @@ public class ItemManager : MonoBehaviour
                 break;
             }
         }
+
+        RefreshUI();
     }
 
     // 2. 아이템 조회
@@ -64,8 +66,9 @@ public class ItemManager : MonoBehaviour
                 return ItemList[i].Count;
             }
         }
-
+        RefreshUI();
         return 0;
+
     }
 
     // 3. 아이템 사용

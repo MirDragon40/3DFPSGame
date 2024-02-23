@@ -39,7 +39,6 @@ public class PlayerMoveAbility : MonoBehaviour, IHitable
 
 
 
-
     // 목표: 캐릭터에게 중력을 적용하고 싶다. 
     // 필요속성: 
     // - 중력 값

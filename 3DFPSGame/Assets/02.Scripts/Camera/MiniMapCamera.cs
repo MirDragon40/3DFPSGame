@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class MiniMapCamera : MonoBehaviour
 {
-    public Transform Target;   // Å¸°ÙÀÌ ÇÃ·¹ÀÌ¾î
-    public float YDistance = 20f;  // ¿ÀÇÁ¼Â Àû¿ë .
-    private Vector3 _initialEulerAngles;  // °¢µµ È¸ÀüÇÒ¶§ ÀÌ¿ë, ÇÃ·¹ÀÌ¾î À§Ä¡¿¡ ¸Â°Ô È¸Àü
+    public Transform Target;   // íƒ€ê²Ÿì´ í”Œë ˆì´ì–´
+    public float YDistance = 20f;  // ì˜¤í”„ì…‹ ì ìš© .
+    private Vector3 _initialEulerAngles;  // ê°ë„ íšŒì „í• ë•Œ ì´ìš©, í”Œë ˆì´ì–´ ìœ„ì¹˜ì— ë§ê²Œ íšŒì „
 
     private void Start()
     {
