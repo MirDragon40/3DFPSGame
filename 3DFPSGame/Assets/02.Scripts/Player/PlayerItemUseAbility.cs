@@ -20,7 +20,6 @@ public class PlayerItemUseAbility : MonoBehaviour
             {
                 // todo: 아이템 효과음 재생
                 // todo: 파티클 시스템 재생
-                ItemManager.Instance.RefreshUI();
             }
             else
             {
