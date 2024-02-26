@@ -96,6 +96,11 @@ public class PlayerMoveAbility : MonoBehaviour, IHitable
     // 3. 이동하기
     void Update()
     {
+        if (GameManager.Instance.State != GameState.Go)
+        {
+            return;
+        }
+
         HealthSliderUI.value = (float)Health / (float)MaxHealth;  // 0 ~ 1
 
         // 플레이어 벽타기 
