@@ -246,7 +246,9 @@ public class PlayerMoveAbility : MonoBehaviour, IHitable
         if (Health <= 0)
         {
             HealthSliderUI.value = 0f;
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+
+            GameManager.Instance.GameOver();
         }
     }
 

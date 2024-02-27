@@ -27,6 +27,7 @@ public class Item    // 게임 관련된 요소들이 들어가 있는 Monobehav
         {
              return false;
         }
+
         Count -= 1;
 
         switch (ItemType)

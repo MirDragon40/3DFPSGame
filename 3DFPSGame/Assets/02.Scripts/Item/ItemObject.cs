@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
+
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -22,7 +22,7 @@ public class ItemObject : MonoBehaviour
 
     private Vector3 _startPosition;
     private const float TRACE_DURATION = 0.3f;
-    private float _prograss = 0;
+    private float _progress = 0;
 
 
     private void Start()
@@ -52,26 +52,6 @@ public class ItemObject : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider collider)
-    {
-        if (collider.CompareTag("Player"))
-        {
-            // 1. 아이템 매니저(인벤토리)에 추가하고
-            ItemManager.Instance.AddItem(ItemType);
-
-
-
-            //* 플레이어와 나의 거리를 알고 싶다. 
-            //float distance = Vector3.Distance(collider.transform.position, transform.position);
-            //Debug.Log(distance); 
-
-
-            // 1. 아이템 매니저(인벤토리)에 추가하고,
-
-            // 2. 사라진다.
-            Destroy(gameObject);
-        }
-    }
     // 실습과제 31. 몬스터가 죽으면 아이템이 드랍된다. (Health: 20%, Stamina: 20% Bullet: 10%)
 
     // 실습과제 32. 일정 거리가 되면 아이템이 Slerp 이용해서 날라오게 하기 (심심하면 베지어곡선 사용)
@@ -79,11 +59,16 @@ public class ItemObject : MonoBehaviour
 
     public void Init()
     {
-        
+        _startPosition = transform.position;
+        _progress = 0f;
+        _traceCoroutine = null;
+        _itemState = ItemState.Idle;
     }
 
     private void Idle()
     {
+        Debug.Log("Idle");
+
         // 플레이어와 나와의 거리 구하기
         float distance = Vector3.Distance(_player.position, transform.position);
         // 플레이어와 아이템 사이의 거리가 충분히 가까워지면 
@@ -98,13 +83,15 @@ public class ItemObject : MonoBehaviour
 
     private void Trace()
     {
+        Debug.Log("Trace");
+
         /*
         _prograss += Time.deltaTime / TRACE_DURATION;
         transform.position = Vector3.Slerp(_startPosition, _player.position, _prograss);
         // Slerp 사용.(시작점, 종료점, 진행도  -> 변수 필요)
         // 진행도를 누적할 시간
         */
-        if (_traceCoroutine != null)
+        if (_traceCoroutine == null)
         {
             _traceCoroutine = StartCoroutine(Trace_Coroutine());
         }
@@ -113,10 +100,10 @@ public class ItemObject : MonoBehaviour
 
     private IEnumerator Trace_Coroutine()
     {
-        while (_prograss < 0.6)
+        while (_progress < 0.6f)
         {
-            _prograss += Time.deltaTime / TRACE_DURATION;
-            transform.position = Vector3.Slerp(_startPosition, _player.position, _prograss);
+            _progress += Time.deltaTime / TRACE_DURATION;
+            transform.position = Vector3.Slerp(_startPosition, _player.position, _progress);
 
             yield return null;   // 다음 프레임까지 대기
         }
@@ -125,8 +112,7 @@ public class ItemObject : MonoBehaviour
         ItemManager.Instance.AddItem(ItemType);
 
         // 2. 사라진다.
-        _prograss = 0f;
-        _traceCoroutine = null;
+
         gameObject.SetActive(false);
 
     }

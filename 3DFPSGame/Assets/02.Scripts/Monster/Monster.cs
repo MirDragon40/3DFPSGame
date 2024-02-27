@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -27,6 +28,7 @@ public class Monster : MonoBehaviour, IHitable
 
     // private CharacterController _characterController;
     private NavMeshAgent _navMeshAgent;
+    private Animator _animator;  
 
     private Transform _target;  // 플레이어
     public float FindDistance = 5f;    // 감지 범위
@@ -59,6 +61,8 @@ public class Monster : MonoBehaviour, IHitable
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _navMeshAgent.speed = MoveSpeed;
 
+        _animator = GetComponentInChildren<Animator>();   // 자식오브젝트에게서 찾는다.
+
         _target = GameObject.FindGameObjectWithTag("Player").transform;
 
         StartPosition = transform.position;
@@ -70,6 +74,10 @@ public class Monster : MonoBehaviour, IHitable
 
     void Update()
     {
+        if (GameManager.Instance.State != GameState.Go)
+        {
+            return;
+        }
 
         HealthSliderUI.value = (float)Health / (float)MaxHealth;   // 0~1
 
@@ -104,6 +112,10 @@ public class Monster : MonoBehaviour, IHitable
                 Damaged();
                 break;
 
+            case MonsterState.Die:
+                Die();
+                break;
+
         }
 
     }
@@ -116,6 +128,7 @@ public class Monster : MonoBehaviour, IHitable
         {
             _idleTimer = 0f;
             Debug.Log("상태 전환: Idle -> Patrol");
+            _animator.SetTrigger("IdleToPatrol");
             _currentState = MonsterState.Patrol;
         }
 
@@ -127,6 +140,7 @@ public class Monster : MonoBehaviour, IHitable
             if (Vector3.Distance(_target.position, transform.position) < FindDistance)
         {
             Debug.Log("상태 전환: idle -> trace");
+            _animator.SetTrigger("IdleToTrace");
             _currentState = MonsterState.Trace;
         }
 
@@ -150,6 +164,8 @@ public class Monster : MonoBehaviour, IHitable
         if (Vector3.Distance(transform.position, StartPosition) >= MoveDistance)
         {
             Debug.Log("상태전환: Trace -> ComeBack ");
+            Debug.Log(Vector3.Distance(transform.position, StartPosition));
+            _animator.SetTrigger("TraceToComeback");
             _currentState = MonsterState.ComeBack;
 
         }
@@ -159,6 +175,7 @@ public class Monster : MonoBehaviour, IHitable
         if (Vector3.Distance(_target.position, transform.position) <= AttackDistance)
         {
             Debug.Log("상태전환: Trace -> Attack");
+            _animator.SetTrigger("TraceToAttack");
             _currentState = MonsterState.Attack;
         }
 
@@ -197,6 +214,7 @@ public class Monster : MonoBehaviour, IHitable
         if (!_navMeshAgent.pathPending && _navMeshAgent.remainingDistance <= TOLERANCE)
         {
             Debug.Log("상태전환: Comeback -> Idle");
+            _animator.SetTrigger("ComebackToIdle");
             _currentState = MonsterState.Idle;
         }
 
@@ -204,6 +222,7 @@ public class Monster : MonoBehaviour, IHitable
         if (Vector3.Distance(StartPosition, transform.position) <= 3)
         {
             Debug.Log("상태전환: Comeback -> Idle");
+            _animator.SetTrigger("ComebackToIdle");
             _currentState = MonsterState.Idle;
         }
     }
@@ -214,6 +233,7 @@ public class Monster : MonoBehaviour, IHitable
         {
             _attackTimer = 0f;
             Debug.Log("상태 전환: Attack -> Trace");
+            _animator.SetTrigger("AttackToTrace");
             _currentState = MonsterState.Trace;
             return;
         }
@@ -222,14 +242,8 @@ public class Monster : MonoBehaviour, IHitable
         _attackTimer += Time.deltaTime;
         if (_attackTimer >= AttackDelay)
         {
-            IHitable playerHitable = _target.GetComponent<IHitable>();
-            if (playerHitable != null)
-            {
-                Debug.Log("때렸다");
-                playerHitable.Hit(Damage);
-                _attackTimer = 0f;
-            }
-
+            _animator.SetTrigger("Attack");
+            // _animator.Play("Attack");
         }
     }
 
@@ -242,12 +256,14 @@ public class Monster : MonoBehaviour, IHitable
         if (!_navMeshAgent.pathPending && _navMeshAgent.remainingDistance <= TOLERANCE)
         {
             Debug.Log("상태 전환: Patrol -> ComeBack");
+            _animator.SetTrigger("PatrolToComeback");
             _currentState = MonsterState.ComeBack;
         }
 
         if (Vector3.Distance(_target.position, transform.position) <= FindDistance)
         {
             Debug.Log("상태 전환: Patrol -> Trace");
+            _animator.SetTrigger("PatrolToTrace");
             _currentState = MonsterState.Trace;
 
         }
@@ -288,6 +304,7 @@ public class Monster : MonoBehaviour, IHitable
             _knockbackPrograss = 0f;
 
             Debug.Log("상태 전환: Damaged -> Trace");
+            _animator.SetTrigger("DamagedToTrace");
             _currentState = MonsterState.Trace;
         }
     }
@@ -295,33 +312,65 @@ public class Monster : MonoBehaviour, IHitable
 
     public void Hit(int damage)
     {
+        if (_currentState == MonsterState.Die)
+        {
+            return;
+        }
+
         Health -= damage;
         if (Health <= 0)
         {
-            Die();
+            Debug.Log("상태 전환: Any -> Die1");
+            _animator.SetTrigger($"Die{Random.Range(1, 3)}");
+            _currentState = MonsterState.Die;
+
+
         }
         else
         {
             Debug.Log("상태 전환: Any -> Damaged");
+            _animator.SetTrigger("Damaged");
             _currentState = MonsterState.Damaged;
         }
     }
+    private Coroutine _dieCoroutine;
 
     private void Die()
     {
-        /*
-        if (Random.Range(0,2) == 1)
+        if (_dieCoroutine == null)
         {
-            // 아이템 주문
-            ItemObjectFactory.Instance.Make(ItemType.Health, transform.position);   
-        }
-        */
+           _dieCoroutine =  StartCoroutine(Die_Coroutine());
 
+        }
+    }
+
+    private IEnumerator Die_Coroutine()
+    {
+        // 죽으면 제자리에 멈춰 플레이어를 따라오지 못하게 함
+        _navMeshAgent.isStopped = true;
+        // 초기화
+        _navMeshAgent.ResetPath();
+
+        HealthSliderUI.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(1.6f);
         // 죽을 때 아이템 생성
+
         ItemObjectFactory.Instance.MakePercent(transform.position);
 
         Destroy(gameObject);
     }
 
+    public void PlayerAttack()
+    {
+        IHitable playerHitable = _target.GetComponent<IHitable>();
+        if (playerHitable != null)
+        {
+            Debug.Log("때렸다");
+            playerHitable.Hit(Damage);
+            _attackTimer = 0f;
+        }
+
+    }
 }
 

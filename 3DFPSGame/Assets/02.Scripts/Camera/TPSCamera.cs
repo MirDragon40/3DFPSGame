@@ -9,6 +9,7 @@ using UnityEngine;
 public class TPSCamera : MonoBehaviour
 {
 
+
     // ** 카메라 회전 **
     // 목표: 마우스를 조작하면 카메라를 캐릭터 중심에 다라 그 방향으로 회전시키고 싶다. 
 
@@ -36,6 +37,11 @@ public class TPSCamera : MonoBehaviour
     public float a;
     private void LateUpdate()
     {
+        if (GameManager.Instance.State != GameState.Go)
+        {
+            return;
+        }
+
         transform.localPosition = Target.position + Offset;
         transform.LookAt(Target);
 

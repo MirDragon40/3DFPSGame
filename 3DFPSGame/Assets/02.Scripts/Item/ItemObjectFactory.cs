@@ -32,16 +32,17 @@ public class ItemObjectFactory : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+
         _itemPool = new List<ItemObject>();
 
-        for (int i = 0; i < PoolCount; i++)    // 10번
+        for (int i = 0; i < PoolCount; ++i)            // 10번
         {
-            foreach (GameObject prefab in ItemPrefabs)   // 3개
+            foreach (GameObject prefab in ItemPrefabs) // 3개
             {
-                // 만들고
+                // 1. 만들고
                 GameObject item = Instantiate(prefab);
-                // 창고에 넣는다.
-                item.transform.SetParent(transform);
+                // 2. 창고에 넣는다.
+                item.transform.SetParent(this.transform);
                 _itemPool.Add(item.GetComponent<ItemObject>());
                 // 3. 비활성화
                 item.SetActive(false);
