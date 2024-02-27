@@ -13,6 +13,10 @@ public class PlayerGunFireAbility : MonoBehaviour
     public Gun CurrentGun;   // 현재 들고있는 총
     private int _currentGunIndex;  // 현재 들고있는 총의 순서
 
+    // 애니메이터
+    private Animator _animator;
+
+
     // 목표: 마우스 왼쪽 버튼을 누르면 시선이 바라보는 방향으로 총을 발사하고 싶다.
     // 필요 속성
     // - 총알 튀는 이펙트 프리펩
@@ -66,6 +70,10 @@ public class PlayerGunFireAbility : MonoBehaviour
         RefreshGun();
 
         // 처음 시작할 때 라이플 
+    }
+    private void Awake()
+    {
+        _animator = GetComponentInChildren<Animator>();
     }
 
     // 줌 모드에 따라 카메라 FOV 수정해주는 메서드
@@ -191,12 +199,17 @@ public class PlayerGunFireAbility : MonoBehaviour
         // 1. 만약에 마우스 왼쪽 버튼을 누른 상태 && 쿨타임이 다 지난 상태
         if (Input.GetMouseButton(0) && _timer >= CurrentGun.FireCoolTime && CurrentGun.BulletRemainCount > 0)  // 마우스 왼쪽 버튼 0
         {
+
+            _animator.SetTrigger("Shot");
+
             // 재장전 취소
             if (_isReloading)
             {
                 StopAllCoroutines();
                 _isReloading = false;
             }
+
+
 
             CurrentGun.BulletRemainCount--;
             RefreshUI();
@@ -241,7 +254,7 @@ public class PlayerGunFireAbility : MonoBehaviour
     private void RefreshUI()
     {
         GunImageUI.sprite = CurrentGun.ProfileImage;
-        BulletNumUI.text = $"{CurrentGun.BulletRemainCount:d2} / {CurrentGun.MaxBulletCount}";
+        BulletNumUI.text = $"{CurrentGun.BulletRemainCount:d2}/{CurrentGun.MaxBulletCount}";
 
         CrosshairUI.SetActive(!_isZoomMode);
         CrosshairZoomUI.SetActive(_isZoomMode);

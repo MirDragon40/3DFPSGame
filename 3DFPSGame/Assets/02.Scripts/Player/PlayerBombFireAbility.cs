@@ -2,11 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerBombFireAbility : MonoBehaviour
 {
+
+    private Animator _animator;
+
     // 목표: 마우스 오른쪽 버튼을 누르면 시선이 바라보는 방향으로 수류탄을 던지고 싶다.
     // 필요 속성:
     // - 수류탄 프리팹
@@ -45,8 +49,15 @@ public class PlayerBombFireAbility : MonoBehaviour
 
     private void RefreshUI()
     {
-        BombTextUI.text = $"{BombRemainCount} / {BombMaxCount}";
+        BombTextUI.text = $"{BombRemainCount}/{BombMaxCount}";
     }
+
+    private void Awake()
+    {
+        _animator = GetComponentInChildren<Animator>();
+
+    }
+
 
     private void Update()
     {
@@ -59,6 +70,7 @@ public class PlayerBombFireAbility : MonoBehaviour
         // 1. 마우스 오른쪽 버튼을 눌렀을 때 && 수류탄 개수가 0보다 크면
         if (Input.GetMouseButtonDown(1) && BombRemainCount > 0)
         {
+            _animator.SetTrigger("Throw");
             BombRemainCount--;
 
             RefreshUI();
