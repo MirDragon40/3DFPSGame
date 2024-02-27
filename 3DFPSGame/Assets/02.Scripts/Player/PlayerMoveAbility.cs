@@ -243,10 +243,15 @@ public class PlayerMoveAbility : MonoBehaviour, IHitable
 
     public void Hit(int damage)
     {
+
+
         StartCoroutine(HitEffect_Coroutine(0.3f));
         CameraManager.Instance.CameraShake.Shake();
 
         Health -= damage;
+
+        _animator.SetLayerWeight(1, 1 - Health / (float)MaxHealth);
+
         if (Health <= 0)
         {
             HealthSliderUI.value = 0f;

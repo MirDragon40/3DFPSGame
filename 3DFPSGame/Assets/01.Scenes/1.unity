@@ -6847,7 +6847,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RotationSpeed: 500
   Target: {fileID: 805419201}
-  Offset: {x: 0, y: 3, z: -5}
+  Offset: {x: 0, y: 3, z: -7}
   a: 0
 --- !u!114 &2018197504
 MonoBehaviour:
@@ -7339,10 +7339,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2937510183403744107, guid: 8af3d037679a404429248fdae87b4d53, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5071556712207482087, guid: 8af3d037679a404429248fdae87b4d53, type: 3}
-      propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8406998047576919217, guid: 8af3d037679a404429248fdae87b4d53, type: 3}
