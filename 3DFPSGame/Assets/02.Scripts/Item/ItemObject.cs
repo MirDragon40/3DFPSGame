@@ -67,7 +67,7 @@ public class ItemObject : MonoBehaviour
 
     private void Idle()
     {
-        Debug.Log("Idle");
+        //Debug.Log("Idle");
 
         // 플레이어와 나와의 거리 구하기
         float distance = Vector3.Distance(_player.position, transform.position);
@@ -83,7 +83,7 @@ public class ItemObject : MonoBehaviour
 
     private void Trace()
     {
-        Debug.Log("Trace");
+        //Debug.Log("Trace");
 
         /*
         _prograss += Time.deltaTime / TRACE_DURATION;

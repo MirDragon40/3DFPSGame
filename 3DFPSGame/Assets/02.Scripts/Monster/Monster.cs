@@ -291,7 +291,6 @@ public class Monster : MonoBehaviour, IHitable
             dir.Normalize();
 
             _knockbackEndPosition = transform.position + dir * KnockbackPower;
-
         }
 
         _knockbackPrograss += Time.deltaTime / KNOCKBACK_DURATION;
@@ -323,8 +322,6 @@ public class Monster : MonoBehaviour, IHitable
             Debug.Log("상태 전환: Any -> Die1");
             _animator.SetTrigger($"Die{Random.Range(1, 3)}");
             _currentState = MonsterState.Die;
-
-
         }
         else
         {
@@ -333,7 +330,9 @@ public class Monster : MonoBehaviour, IHitable
             _currentState = MonsterState.Damaged;
         }
     }
+
     private Coroutine _dieCoroutine;
+
 
     private void Die()
     {
