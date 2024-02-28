@@ -10,6 +10,8 @@ public class Drum : MonoBehaviour, IHitable
     public GameObject ExplosionPaticlePrefab;
     private Rigidbody _rigidbody;
 
+    public Material[] materials;
+
     public float UpPower = 7f;
 
     public int Damage = 70;
@@ -33,7 +35,14 @@ public class Drum : MonoBehaviour, IHitable
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+
+        // Random.Range를 이용하여 랜덤한 인덱스를 생성함.
+        int index = Random.Range(0, materials.Length);
+        meshRenderer.material = materials[index];
     }
+
+
 
     private void Explosion()
     {

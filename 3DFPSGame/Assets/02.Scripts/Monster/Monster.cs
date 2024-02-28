@@ -339,7 +339,9 @@ public class Monster : MonoBehaviour, IHitable
     private void Die()
     {
         Debug.Log("상태 전환: Any -> Die");
+
         _animator.SetTrigger($"Die{Random.Range(1, 3)}");
+
         _currentState = MonsterState.Die;
 
         if (_dieCoroutine == null)

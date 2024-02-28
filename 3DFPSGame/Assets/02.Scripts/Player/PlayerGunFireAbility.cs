@@ -115,7 +115,7 @@ public class PlayerGunFireAbility : MonoBehaviour
 
         if (CurrentGun.GType == GunType.Sniper && _zoomProgress < 1)
         {
-            if (_isZoomMode)
+            if (_isZoomMode)  // 줌인
             {
                 _zoomProgress += Time.deltaTime / ZoomInDuration;
                 Camera.main.fieldOfView = Mathf.Lerp(DefaultFOV, ZoomFOV, _zoomProgress);
