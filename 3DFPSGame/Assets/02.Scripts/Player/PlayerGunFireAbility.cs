@@ -16,6 +16,8 @@ public class PlayerGunFireAbility : MonoBehaviour
     // 애니메이터
     private Animator _animator;
 
+    public List<GameObject> MuzzleEffects;
+
 
     // 목표: 마우스 왼쪽 버튼을 누르면 시선이 바라보는 방향으로 총을 발사하고 싶다.
     // 필요 속성
@@ -63,6 +65,11 @@ public class PlayerGunFireAbility : MonoBehaviour
 
     private void Start()
     {
+        foreach (GameObject muzzleEffect in MuzzleEffects)
+        {
+            muzzleEffect.SetActive(false);
+        }
+
         _currentGunIndex = 0;
 
         // 총알 개수 초기화
@@ -216,6 +223,14 @@ public class PlayerGunFireAbility : MonoBehaviour
 
             _timer = 0;
 
+
+            StartCoroutine(MuzzleEffectOn_Coroutine());
+
+
+
+
+
+
             // 2. 레이(광선)을 생성하고, 위치와 방향을 설정한다.
             Ray ray = new Ray(Camera.main.transform.position, direction: Camera.main.transform.forward);
             // 3. 레이를 발사한다. 
@@ -287,5 +302,19 @@ public class PlayerGunFireAbility : MonoBehaviour
             }**/
             gun.gameObject.SetActive(gun == CurrentGun);
         }
+    }
+
+    private IEnumerator MuzzleEffectOn_Coroutine()
+    {
+        // 총 이펙트 중 하나를 켜준다.
+        int randomIndex = UnityEngine.Random.Range(0, MuzzleEffects.Count);
+        MuzzleEffects[randomIndex].SetActive(true);
+
+        // 0.1초 후
+        yield return new WaitForSeconds(0.1f);
+
+        // 꺼준다.
+        MuzzleEffects[randomIndex].SetActive(false);
+
     }
 }
