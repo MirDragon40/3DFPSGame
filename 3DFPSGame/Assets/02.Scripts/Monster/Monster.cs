@@ -295,6 +295,11 @@ public class Monster : MonoBehaviour, IHitable
 
         _knockbackPrograss += Time.deltaTime / KNOCKBACK_DURATION;
 
+
+        Debug.Log("상태 전환: Any -> Damaged");
+        _animator.SetTrigger("Damaged");
+        _currentState = MonsterState.Damaged;
+
         // 2-2. Lerp를 이용해 넉백하기
         transform.position = Vector3.Lerp(_knockbackStartPosition, _knockbackEndPosition, _knockbackPrograss);
 
@@ -316,19 +321,16 @@ public class Monster : MonoBehaviour, IHitable
             return;
         }
 
+        Damaged();
+
         Health -= damage;
+
+
         if (Health <= 0)
         {
-            Debug.Log("상태 전환: Any -> Die1");
-            _animator.SetTrigger($"Die{Random.Range(1, 3)}");
-            _currentState = MonsterState.Die;
+            Die();
         }
-        else
-        {
-            Debug.Log("상태 전환: Any -> Damaged");
-            _animator.SetTrigger("Damaged");
-            _currentState = MonsterState.Damaged;
-        }
+
     }
 
     private Coroutine _dieCoroutine;
@@ -336,6 +338,10 @@ public class Monster : MonoBehaviour, IHitable
 
     private void Die()
     {
+        Debug.Log("상태 전환: Any -> Die1");
+        _animator.SetTrigger($"Die{Random.Range(1, 3)}");
+        _currentState = MonsterState.Die;
+
         if (_dieCoroutine == null)
         {
            _dieCoroutine =  StartCoroutine(Die_Coroutine());
@@ -369,7 +375,6 @@ public class Monster : MonoBehaviour, IHitable
             playerHitable.Hit(Damage);
             _attackTimer = 0f;
         }
-
     }
 }
 
