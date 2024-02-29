@@ -184,7 +184,8 @@ public class PlayerMoveAbility : MonoBehaviour, IHitable
 
             if (_yVelocity < -3)
             {
-                Hit(10 * (int)(_yVelocity / -10f));
+                DamageInfo damageInfo = new DamageInfo(DamageType.Normal, 10 * (int)(_yVelocity / -10f));
+                Hit(damageInfo);
             }
         }
 
@@ -241,14 +242,14 @@ public class PlayerMoveAbility : MonoBehaviour, IHitable
 
     }
 
-    public void Hit(int damage)
+    public void Hit(DamageInfo damageInfo)
     {
 
 
         StartCoroutine(HitEffect_Coroutine(0.3f));
         CameraManager.Instance.CameraShake.Shake();
 
-        Health -= damage;
+        Health -= damageInfo.Amount;
 
         _animator.SetLayerWeight(1, 1 - Health / (float)MaxHealth);
 

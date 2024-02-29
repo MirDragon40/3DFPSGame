@@ -244,7 +244,18 @@ public class PlayerGunFireAbility : MonoBehaviour
                 IHitable hitObject = hitInfo.collider.GetComponent<IHitable>();
                 if (hitObject != null)   // 때릴 수 있는 친구인가요?
                 {
-                    hitObject.Hit(CurrentGun.Damage);
+                    DamageInfo damageInfo = new DamageInfo(DamageType.Normal, CurrentGun.Damage);
+                    damageInfo.Position = hitInfo.point;
+                    damageInfo.Normal   = hitInfo.normal;
+
+                    if (UnityEngine.Random.Range(0,2) == 0)
+                    {
+                        Debug.Log("크리티컬");
+                        damageInfo.DamageType = DamageType.Critical;
+                        damageInfo.Amount *= 2;
+                    }
+
+                    hitObject.Hit(damageInfo);
                 }
 
                 /*
@@ -257,10 +268,10 @@ public class PlayerGunFireAbility : MonoBehaviour
 
                 // 5. 부딪힌 위치에 (총알이 튀는) 이펙트를 생성한다. 
                 //Debug.Log(hitInfo.point);
-                HitEffect.gameObject.transform.position = hitInfo.point;
+              //  HitEffect.gameObject.transform.position = hitInfo.point;
                 // 6. 이펙트가 쳐다보는 방향을 부딪힌 위치의 법선 벡터로 한다. 
-                HitEffect.gameObject.transform.forward = hitInfo.normal;
-                HitEffect.Play();  // 파티클도 오디오와같이 play를 사용해주어야 한다.
+              //  HitEffect.gameObject.transform.forward = hitInfo.normal;
+              //  HitEffect.Play();  // 파티클도 오디오와같이 play를 사용해주어야 한다.
             }
         }
     }

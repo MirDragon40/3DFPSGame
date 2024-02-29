@@ -314,7 +314,7 @@ public class Monster : MonoBehaviour, IHitable
     }
 
 
-    public void Hit(int damage)
+    public void Hit(DamageInfo damage)
     {
         if (_currentState == MonsterState.Die)
         {
@@ -323,9 +323,9 @@ public class Monster : MonoBehaviour, IHitable
 
         Damaged();
 
-        Health -= damage;
+        // Todo. 실습 과제 47. 데미지 타이빙 크리티컬이면 피흘리기
 
-
+        Health -= damage.Amount;
         if (Health <= 0)
         {
             Die();
@@ -374,7 +374,9 @@ public class Monster : MonoBehaviour, IHitable
         if (playerHitable != null)
         {
             Debug.Log("때렸다");
-            playerHitable.Hit(Damage);
+
+            DamageInfo damageInfo = new DamageInfo(DamageType.Normal, Damage);
+            playerHitable.Hit(damageInfo);
             _attackTimer = 0f;
         }
     }
