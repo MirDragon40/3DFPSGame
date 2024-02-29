@@ -55,6 +55,9 @@ public class Monster : MonoBehaviour, IHitable
 
     private MonsterState _currentState = MonsterState.Idle;
 
+    [Header("피 프리팹")]
+    public GameObject BloodPrefab;
+
     private void Start()
     {
         //_characterController = GetComponent<CharacterController>();
@@ -323,7 +326,14 @@ public class Monster : MonoBehaviour, IHitable
 
         Damaged();
 
-        // Todo. 실습 과제 47. 데미지 타이빙 크리티컬이면 피흘리기
+        // Todo. 데미지 타이빙 크리티컬이면 피흘리기
+        if (damage.DamageType == DamageType.Critical)
+        {
+            GameObject bloodObject = Instantiate(BloodPrefab);
+            bloodObject.transform.position = damage.Position;
+            bloodObject.transform.forward = damage.Normal;
+        }
+        // Todo. 실습과제 47. 블러드를 팩토리패턴으로 구현하기 (파일 및 클래스명: BloodFactory)
 
         Health -= damage.Amount;
         if (Health <= 0)
@@ -353,7 +363,7 @@ public class Monster : MonoBehaviour, IHitable
 
     private IEnumerator Die_Coroutine()
     {
-        // 죽으면 제자리에 멈춰 플레이어를 따라오지 못하게 함
+        // 죽으면 제자리에 멈춰 플레이어를 따라오지 못하게 함.
         _navMeshAgent.isStopped = true;
         // 초기화
         _navMeshAgent.ResetPath();

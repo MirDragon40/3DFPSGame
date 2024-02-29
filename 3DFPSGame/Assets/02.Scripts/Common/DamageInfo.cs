@@ -24,6 +24,4 @@ public struct DamageInfo
         this.Position   = Vector3.zero;
         this.Normal     = Vector3.zero;
     }
-
-
 }

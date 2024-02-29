@@ -268,10 +268,10 @@ public class PlayerGunFireAbility : MonoBehaviour
 
                 // 5. 부딪힌 위치에 (총알이 튀는) 이펙트를 생성한다. 
                 //Debug.Log(hitInfo.point);
-              //  HitEffect.gameObject.transform.position = hitInfo.point;
+               HitEffect.gameObject.transform.position = hitInfo.point;
                 // 6. 이펙트가 쳐다보는 방향을 부딪힌 위치의 법선 벡터로 한다. 
-              //  HitEffect.gameObject.transform.forward = hitInfo.normal;
-              //  HitEffect.Play();  // 파티클도 오디오와같이 play를 사용해주어야 한다.
+               HitEffect.gameObject.transform.forward = hitInfo.normal;
+               HitEffect.Play();  // 파티클도 오디오와같이 play를 사용해주어야 한다.
             }
         }
     }

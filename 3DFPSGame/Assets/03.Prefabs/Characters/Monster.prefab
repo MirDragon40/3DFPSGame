@@ -460,6 +460,7 @@ MonoBehaviour:
   Damage: 10
   KnockbackPower: 0.5
   PatrolTarget: {fileID: 0}
+  BloodPrefab: {fileID: 1000013355911406, guid: d32aa916f50cac94db11e6f19821a58f, type: 3}
 --- !u!143 &6125272839674791074
 CharacterController:
   m_ObjectHideFlags: 0
