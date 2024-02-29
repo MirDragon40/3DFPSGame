@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
 
     public Color GoStateColor;
 
+    public UI_OptionPopup OptionUI;
+
     private void Awake()
     {
         Instance = this;
@@ -88,5 +90,11 @@ public class GameManager : MonoBehaviour
             }
 
         }
+    }
+
+    public void OnOptionButtonClicked()
+    {
+        Debug.Log("옵션 버튼 클릭");
+        OptionUI.Open();
     }
 }

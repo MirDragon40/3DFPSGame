@@ -31,9 +31,9 @@ public class FPSCamera : MonoBehaviour
     private void Start()
     {
         // 마우스 커서를 숨기는 코드
-        Cursor.visible = false;
+        //Cursor.visible = false;
         // 마우스를 고정시키는 코드
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
 
     }
 
