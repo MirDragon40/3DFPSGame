@@ -21,8 +21,6 @@ using UnityEngine;
 // 3. 한마디로 단점이 없다.
 public class ItemObjectFactory : MonoBehaviour
 {
-
-
     public static ItemObjectFactory Instance { get; private set; }
 
     // 공장의 창고
