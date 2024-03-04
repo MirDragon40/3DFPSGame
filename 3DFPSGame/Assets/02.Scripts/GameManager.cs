@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     public Color GoStateColor;
 
     public UI_OptionPopup OptionUI;
+    public UI_GameOverPopup GameOverUI;
+
 
     private void Awake()
     {
@@ -32,6 +34,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1f;
+
         StartCoroutine(Start_Coroutine());
     }
 
@@ -73,6 +77,7 @@ public class GameManager : MonoBehaviour
             {
                 StateTextUI.text = "Ready...";
                 StateTextUI.color = new Color32(0, 253, 181, 255);
+               
                 break;
             }
 
@@ -111,7 +116,7 @@ public class GameManager : MonoBehaviour
         // Unscaled time 을 누르면 
     }
 
-    public void ResumeGame()
+    public void ContinueGame()
     {
         //State = GameState.Go;
         Time.timeScale = 1f;

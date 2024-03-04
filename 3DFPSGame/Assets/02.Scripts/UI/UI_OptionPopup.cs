@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UI_OptionPopup : MonoBehaviour
 {
+    
+
     public void Open()
     {
         // 사운드 효과음이라던지
@@ -17,7 +20,7 @@ public class UI_OptionPopup : MonoBehaviour
         // 사운드 효과음이라던지
         // 여러가지
         gameObject.SetActive(false);
-        GameManager.Instance.ResumeGame();
+        GameManager.Instance.ContinueGame();
 
     }
 
@@ -31,8 +34,11 @@ public class UI_OptionPopup : MonoBehaviour
 
         Close();
     }
-    public void OnRestartButton()
+    public void OnResumeButton()
     {
+        // 씬매니저야. (현재 열려 있는 씬)번 씬을 로드해라
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(0);
         Debug.Log("다시하기 버튼 클릭");
 
 

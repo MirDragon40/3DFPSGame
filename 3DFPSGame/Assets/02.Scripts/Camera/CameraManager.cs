@@ -94,7 +94,7 @@ public class CameraManager : MonoBehaviour
         {
             if (Cursor.lockState == CursorLockMode.Locked)
             {
-                //Cursor.lockState = CursorLockMode.None;
+               //Cursor.lockState = CursorLockMode.None;
             }
             else
             {
