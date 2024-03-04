@@ -9,6 +9,7 @@ public enum GameState
 {
     Ready, // 준비
     Go, // 시작
+    Pause,
     Over,  // 오버
 }
 public class GameManager : MonoBehaviour
@@ -95,6 +96,24 @@ public class GameManager : MonoBehaviour
     public void OnOptionButtonClicked()
     {
         Debug.Log("옵션 버튼 클릭");
+
+
+        PauseGame();
         OptionUI.Open();
+
+    }
+
+    public void PauseGame()
+    {
+        //State = GameState.Pause;
+        Time.timeScale = 0f;
+
+        // Unscaled time 을 누르면 
+    }
+
+    public void ResumeGame()
+    {
+        //State = GameState.Go;
+        Time.timeScale = 1f;
     }
 }

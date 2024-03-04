@@ -41,5 +41,12 @@ public class UI_OptionPopup : MonoBehaviour
     {
         Debug.Log("게임종료 버튼 클릭");
 
+        Application.Quit();
+
+#if UNITY_EDITOR
+        // 유니티 에디터 에서 실행했을 경우 종료하는 방법
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+
     }
 }
