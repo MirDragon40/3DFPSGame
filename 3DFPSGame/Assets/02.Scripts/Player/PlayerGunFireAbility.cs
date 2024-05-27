@@ -107,7 +107,6 @@ public class PlayerGunFireAbility : MonoBehaviour
         // 마우스 휠 버튼 눌렀을 때 && 현재 총이 스나이퍼
         if (Input.GetMouseButtonDown(2) && CurrentGun.GType == GunType.Sniper)
         {
-            
             _isZoomMode = !_isZoomMode;  // 줌 모드 뒤집기
             _zoomProgress = 0f;
             RefreshUI();
